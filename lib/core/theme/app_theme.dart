@@ -20,8 +20,12 @@ class AppTheme {
 
   ThemeData getThemeData() {
     return ThemeData(
-      colorSchemeSeed: colors[selectedColor],
-      brightness: isDarkMode ? Brightness.dark : Brightness.light,
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: colors[selectedColor],
+        brightness: isDarkMode ? Brightness.dark : Brightness.light,
+        primary: const Color(0xFF2E4A62), // 👈 azul definido como primary
+      ),
     );
   }
 }

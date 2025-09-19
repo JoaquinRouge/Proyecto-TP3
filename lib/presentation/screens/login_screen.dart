@@ -74,7 +74,7 @@ class LoginScreen extends StatelessWidget {
                     // TODO: acción de login
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2E4A62), // azul oscuro
+                    backgroundColor: Theme.of(context).colorScheme.primary, // azul oscuro
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -82,7 +82,10 @@ class LoginScreen extends StatelessWidget {
                   ),
                   child: const Text(
                     'Iniciar sesión',
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white
+                    ),
                   ),
                 ),
 

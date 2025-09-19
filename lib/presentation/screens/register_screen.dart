@@ -107,7 +107,7 @@ class RegisterScreen extends StatelessWidget {
                         // TODO: acción para crear cuenta
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2E4A62), // azul oscuro
+                        backgroundColor: Theme.of(context).colorScheme.primary, // azul oscuro
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -115,7 +115,10 @@ class RegisterScreen extends StatelessWidget {
                       ),
                       child: const Text(
                         'Registrarse',
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white
+                        ),
                       ),
                     ),
 
