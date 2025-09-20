@@ -7,7 +7,6 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -71,7 +70,7 @@ class LoginScreen extends StatelessWidget {
                 // Botón de inicio de sesión
                 ElevatedButton(
                   onPressed: () {
-                    // TODO: acción de login
+                    context.go('/home');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary, // azul oscuro
