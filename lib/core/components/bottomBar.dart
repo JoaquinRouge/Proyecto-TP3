@@ -19,7 +19,7 @@ class CustomBottomBar extends ConsumerWidget {
       height: 90,
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(color: Colors.grey.shade300, width: 0.2),
+          top: BorderSide(color: Colors.grey.shade300, width: 0.1),
         ),
       ),
       child: Padding(
