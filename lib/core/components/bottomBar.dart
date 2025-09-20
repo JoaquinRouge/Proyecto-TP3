@@ -16,7 +16,7 @@ class CustomBottomBar extends ConsumerWidget {
     });
 
     return Container(
-      height: 90,
+      height: 70,
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(color: Colors.grey.shade300, width: 0.1),
@@ -73,11 +73,11 @@ class CustomBottomBar extends ConsumerWidget {
           HeroIcon(
             icon,
             style: samePage ?  HeroIconStyle.solid : HeroIconStyle.outline,
-            size: 30,
+            size: 25,
             color: samePage ? Theme.of(context).colorScheme.primary : Colors.grey,
           ),
         const SizedBox(height: 4),
-        Text(label, style: TextStyle(color: samePage ? Theme.of(context).colorScheme.primary : Colors.grey, fontSize: 12)),
+        Text(label, style: TextStyle(color: samePage ? Theme.of(context).colorScheme.primary : Colors.grey, fontSize: 11)),
       ],
     );
   }

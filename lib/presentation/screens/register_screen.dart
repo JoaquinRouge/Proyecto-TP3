@@ -6,7 +6,8 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(// fondo oscuro
+    return Scaffold(
+      // fondo oscuro
       body: SafeArea(
         child: Stack(
           children: [
@@ -51,7 +52,10 @@ class RegisterScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: 'Nombre de usuario',
                         hintStyle: const TextStyle(color: Colors.white70),
-                        prefixIcon: const Icon(Icons.person, color: Colors.white70),
+                        prefixIcon: const Icon(
+                          Icons.person,
+                          color: Colors.white70,
+                        ),
                         filled: true,
                         fillColor: const Color(0xFF1E1E1E),
                         border: OutlineInputBorder(
@@ -69,7 +73,10 @@ class RegisterScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: 'Correo electrónico',
                         hintStyle: const TextStyle(color: Colors.white70),
-                        prefixIcon: const Icon(Icons.email, color: Colors.white70),
+                        prefixIcon: const Icon(
+                          Icons.email,
+                          color: Colors.white70,
+                        ),
                         filled: true,
                         fillColor: const Color(0xFF1E1E1E),
                         border: OutlineInputBorder(
@@ -88,7 +95,10 @@ class RegisterScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: 'Contraseña',
                         hintStyle: const TextStyle(color: Colors.white70),
-                        prefixIcon: const Icon(Icons.lock, color: Colors.white70),
+                        prefixIcon: const Icon(
+                          Icons.lock,
+                          color: Colors.white70,
+                        ),
                         filled: true,
                         fillColor: const Color(0xFF1E1E1E),
                         border: OutlineInputBorder(
@@ -106,7 +116,9 @@ class RegisterScreen extends StatelessWidget {
                         // TODO: acción para crear cuenta
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary, // azul oscuro
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.primary, // azul oscuro
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -116,7 +128,8 @@ class RegisterScreen extends StatelessWidget {
                         'Registrarse',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),

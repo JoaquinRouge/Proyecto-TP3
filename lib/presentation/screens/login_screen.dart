@@ -83,7 +83,8 @@ class LoginScreen extends StatelessWidget {
                     'Iniciar sesión',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.white
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
                 ),
