@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: Text('Bienvenido a la pantalla de inicio'),
       ),
-      bottomNavigationBar: CustomBottomBar(currentRoute: "/home",),
+      bottomNavigationBar: CustomBottomBar(),
     );
   }
 }

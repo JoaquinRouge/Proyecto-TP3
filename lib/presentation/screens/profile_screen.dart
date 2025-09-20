@@ -10,7 +10,7 @@ class ProfileScreen extends StatelessWidget {
       body: Center(
         child: Text('Bienvenido a la pantalla de perfil'),
       ),
-      bottomNavigationBar: CustomBottomBar(currentRoute: "/profile",),
+      bottomNavigationBar: CustomBottomBar(),
     );
   }
 }

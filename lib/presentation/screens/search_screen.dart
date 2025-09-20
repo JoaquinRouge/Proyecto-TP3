@@ -10,7 +10,7 @@ class SearchScreen extends StatelessWidget {
       body: Center(
         child: Text('Bienvenido a la pantalla de búsqueda'),
       ),
-      bottomNavigationBar: CustomBottomBar(currentRoute: "/search",),
+      bottomNavigationBar: CustomBottomBar(),
     );
   }
 }

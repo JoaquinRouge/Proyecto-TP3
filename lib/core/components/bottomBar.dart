@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:proyecto_tp3/provider/pageProvider.dart';
 
-class CustomBottomBar extends StatelessWidget {
-  final String currentRoute;
-  const CustomBottomBar({super.key, required this.currentRoute});
+class CustomBottomBar extends ConsumerWidget {
+  const CustomBottomBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(pageProvider, (previous,next) {
+      if(next != previous) {
+        context.go(next);
+      }
+    });
+
     return Container(
       height: 90,
       decoration: BoxDecoration(
@@ -20,48 +27,58 @@ class CustomBottomBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            navItem(context, HeroIcons.home, 'Home', '/home'),
-            navItem(context, HeroIcons.bookOpen, 'Library', '/library'),
-            navItem(context, HeroIcons.magnifyingGlass, 'Search', '/search'),
-            navItem(context, HeroIcons.user, 'Profile', '/profile'),
+            GestureDetector(
+              onTap: () {
+                ref.read(pageProvider.notifier).state = '/home';
+              },
+              child: navItem(context, HeroIcons.home, 'Home', '/home',ref),
+            ),
+            GestureDetector(
+              onTap: () {
+                ref.read(pageProvider.notifier).state = '/library';
+              },
+              child: navItem(context, HeroIcons.bookOpen, 'Library', '/library',ref),
+            ),
+            GestureDetector(
+              onTap: () {
+                ref.read(pageProvider.notifier).state = '/search';
+              },
+              child:navItem(context, HeroIcons.magnifyingGlass, 'Search', '/search',ref),
+            ),
+            GestureDetector(
+              onTap: () {
+                ref.read(pageProvider.notifier).state = '/profile';
+              },
+              child: navItem(context, HeroIcons.user, 'Profile', '/profile',ref),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Column navItem(BuildContext context, HeroIcons icon, String label, String route) {
-    final bool isSelected = currentRoute == route;
-    final Color color = isSelected ? Theme.of(context).colorScheme.primary : Colors.grey;
+  Column navItem(
+    BuildContext context,
+    HeroIcons icon,
+    String label,
+    String route,
+    WidgetRef ref
+  ) {
+
+    bool samePage = ref.watch(pageProvider) == route;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        GestureDetector(
-          onTap: () {
-            if (!isSelected) {
-              GoRouter.of(context).go(route);
-            }
-          },
-          child: HeroIcon(
+          HeroIcon(
             icon,
-            style: isSelected ? HeroIconStyle.solid : HeroIconStyle.outline,
+            style: samePage ?  HeroIconStyle.solid : HeroIconStyle.outline,
             size: 30,
-            color: color,
+            color: samePage ? Theme.of(context).colorScheme.primary : Colors.grey,
           ),
-        ),
         const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            color: color,
-            fontSize: 12,
-          ),
-        ),
+        Text(label, style: TextStyle(color: samePage ? Theme.of(context).colorScheme.primary : Colors.grey, fontSize: 12)),
       ],
     );
   }
 }
-
-
-

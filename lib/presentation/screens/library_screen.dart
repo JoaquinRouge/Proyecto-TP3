@@ -10,7 +10,7 @@ class LibraryScreen extends StatelessWidget {
       body: Center(
         child: Text('Bienvenido a la pantalla de biblioteca'),
       ),
-      bottomNavigationBar: CustomBottomBar(currentRoute: "/library",),
+      bottomNavigationBar: CustomBottomBar(),
     );
   }
 }
