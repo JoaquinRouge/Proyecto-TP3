@@ -9,8 +9,25 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       appBar: CustomAppBar(title: "Home"),
-      body: Center(
-        child: Column(children: [Text('Bienvenido a la pantalla de inicio')]),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start, // Alinea a la izquierda
+          children: [
+            Text('Bienvenido de nuevo,', style: TextStyle(color: Colors.white)),
+            Padding(
+              padding: EdgeInsets.only(left: 5), // mueve el texto a la derecha
+              child: Text(
+                "Usuario",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: CustomBottomBar(),
     );
