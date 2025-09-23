@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
     return const Scaffold(
       appBar: CustomAppBar(title: "Home"),
       body: Center(
-        child: Text('Bienvenido a la pantalla de inicio'),
+        child: Column(children: [Text('Bienvenido a la pantalla de inicio')]),
       ),
       bottomNavigationBar: CustomBottomBar(),
     );
