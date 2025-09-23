@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_tp3/core/components/appBar.dart';
 import 'package:proyecto_tp3/core/components/bottomBar.dart';
+import 'package:proyecto_tp3/core/components/gameCard.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       appBar: CustomAppBar(title: "Home"),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // Alinea a la izquierda
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Bienvenido de nuevo,', style: TextStyle(color: Colors.white)),
-            Padding(
-              padding: EdgeInsets.only(left: 5), // mueve el texto a la derecha
+            const Text(
+              'Bienvenido de nuevo,',
+              style: TextStyle(color: Colors.white),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 5),
               child: Text(
                 "Usuario",
                 style: TextStyle(
@@ -25,6 +29,30 @@ class HomeScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: 160,
+                  child: GameCard(
+                    name: "The Witcher 3: Wild Hunt",
+                    rating: 3.5,
+                    genres: ["RPG", "Adventure"],
+                    coverImage:
+                        "https://dixgamer.com/wp-content/uploads/2024/07/the-witcher-3-wild-hunt-245x300.jpg",
+                  ),
+                ),
+                SizedBox(
+                  width: 160,
+                  child: GameCard(
+                    name: "The Witcher 3: Wild Hunt",
+                    rating: 3.5,
+                    genres: ["RPG", "Adventure"],
+                    coverImage:
+                        "https://dixgamer.com/wp-content/uploads/2024/07/the-witcher-3-wild-hunt-245x300.jpg",
+                  ),
+                ),
+              ],
             ),
           ],
         ),
