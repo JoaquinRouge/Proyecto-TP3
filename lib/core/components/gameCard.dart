@@ -16,19 +16,24 @@ class GameCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 220,
-      height: 320,
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        clipBehavior: Clip.hardEdge,
-        color: const Color(0xFF1e2128),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            imageAndInfo(),
-            genresInfo(),
-          ],
+    return GestureDetector(
+      onTap: ()=>{
+        //accion
+      },
+      child: SizedBox(
+        width: 220,
+        height: 320,
+        child: Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          clipBehavior: Clip.hardEdge,
+          color: const Color(0xFF1e2128),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              imageAndInfo(),
+              genresInfo(),
+            ],
+          ),
         ),
       ),
     );
@@ -50,7 +55,7 @@ class GameCard extends StatelessWidget {
                   const Spacer(),
                   Align(
                     alignment: Alignment.bottomRight,
-                    child: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 24),
+                    child: const Icon(Icons.add_circle, color: Colors.white, size: 32),
                   ),
                 ],
               ),
