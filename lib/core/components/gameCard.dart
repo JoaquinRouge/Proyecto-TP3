@@ -16,55 +16,118 @@ class GameCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      color: Colors.grey[900],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start, // <-- Add this for left alignment
-        children: [
-          ListTile(
-            leading: Image.network(
-              coverImage,
-              width: 50,
-              height: 50,
-              fit: BoxFit.cover,
-            ),
-            title: Text(
-              name,
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 16,
-            ), // <-- Pad stars to the left
-            child: Row(
-              children: List.generate(5, (numStar) {
-                if (rating >= numStar + 1) {
-                  return const Icon(Icons.star, color: Colors.amber, size: 20);
-                } else if (rating > numStar && rating < numStar + 1) {
-                  return const Icon(
-                    Icons.star_half,
-                    color: Colors.amber,
-                    size: 20,
-                  );
-                } else {
-                  return const Icon(
-                    Icons.star_border,
-                    color: Colors.amber,
-                    size: 20,
-                  );
-                }
-              }),
-            ),
-          ),
-        ],
+    return SizedBox(
+      width: 220,
+      height: 320,
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        clipBehavior: Clip.hardEdge,
+        color: const Color(0xFF1e2128),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            imageAndInfo(),
+            genresInfo(),
+          ],
+        ),
       ),
     );
+  }
+
+  Expanded genresInfo() {
+    return Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    genres.join(", "),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                  ),
+                  const Spacer(),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 24),
+                  ),
+                ],
+              ),
+            ),
+          );
+  }
+
+  Stack imageAndInfo() {
+    return Stack(
+            children: [
+              Image.network(
+                coverImage,
+                height: 220,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+
+              Container(
+                height: 220,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withOpacity(1),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 8,
+                left: 8,
+                right: 8,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: buildStars(rating),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+  }
+
+  List<Widget> buildStars(double rating) {
+    List<Widget> stars = [];
+    int fullStars = rating.floor();
+    bool hasHalf = (rating - fullStars) >= 0.5;
+
+    for (int i = 0; i < fullStars; i++) {
+      stars.add(const Icon(Icons.star, color: Colors.amber, size: 20));
+    }
+
+    if (hasHalf) {
+      stars.add(const Icon(Icons.star_half, color: Colors.amber, size: 20));
+    }
+
+    while (stars.length < 5) {
+      stars.add(const Icon(Icons.star_border, color: Colors.amber, size: 20));
+    }
+
+    stars.add(const SizedBox(width: 8));
+    stars.add(Text(rating.toString(), style: const TextStyle(color: Colors.white, fontSize: 14)));
+    return stars;
   }
 }

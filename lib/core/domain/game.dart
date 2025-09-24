@@ -6,7 +6,6 @@ class Game {
   double rating;
   String coverImage;
   String releaseDate;
-  List<String> images;
 
   Game({
     required this.id,
@@ -16,6 +15,5 @@ class Game {
     required this.rating,
     required this.coverImage,
     required this.releaseDate,
-    required this.images,
   });
 }
