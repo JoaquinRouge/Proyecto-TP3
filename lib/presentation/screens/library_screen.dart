@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_tp3/core/components/appBar.dart';
-import 'package:proyecto_tp3/core/components/bottomBar.dart';
+import 'package:proyecto_tp3/core/components/app_bar.dart';
+import 'package:proyecto_tp3/core/components/bottom_bar.dart';
 
 class LibraryScreen extends StatelessWidget {
   const LibraryScreen({super.key});

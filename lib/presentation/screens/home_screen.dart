@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_tp3/core/components/appBar.dart';
-import 'package:proyecto_tp3/core/components/bottomBar.dart';
-import 'package:proyecto_tp3/core/components/gameCard.dart';
+import 'package:proyecto_tp3/core/components/app_bar.dart';
+import 'package:proyecto_tp3/core/components/bottom_bar.dart';
+import 'package:proyecto_tp3/core/components/game_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

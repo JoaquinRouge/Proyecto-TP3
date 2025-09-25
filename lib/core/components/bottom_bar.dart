@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:proyecto_tp3/provider/pageProvider.dart';
+import 'package:proyecto_tp3/provider/page_provider.dart';
 
 class CustomBottomBar extends ConsumerWidget {
   const CustomBottomBar({super.key});
