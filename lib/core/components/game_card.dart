@@ -1,38 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_tp3/core/domain/game.dart';
 
 class GameCard extends StatelessWidget {
-  final String name;
-  final double rating;
-  final List<String> genres;
-  final String coverImage;
+  const GameCard({super.key, required this.game});
 
-  const GameCard({
-    super.key,
-    required this.name,
-    required this.rating,
-    required this.genres,
-    required this.coverImage,
-  });
+  final Game game;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()=>{
+      onTap: () => {
         //accion
       },
       child: SizedBox(
         width: 220,
         height: 320,
         child: Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           clipBehavior: Clip.hardEdge,
           color: const Color(0xFF1e2128),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              imageAndInfo(),
-              genresInfo(),
-            ],
+            children: [imageAndInfo(), genresInfo()],
           ),
         ),
       ),
@@ -41,77 +32,79 @@ class GameCard extends StatelessWidget {
 
   Expanded genresInfo() {
     return Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    genres.join(", "),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
-                  ),
-                  const Spacer(),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: const Icon(Icons.add_circle, color: Colors.white, size: 32),
-                  ),
-                ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              game.genres.join(", "),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(color: Colors.white, fontSize: 14),
+            ),
+            const Spacer(),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: const Icon(
+                Icons.add_circle,
+                color: Colors.white,
+                size: 32,
               ),
             ),
-          );
+          ],
+        ),
+      ),
+    );
   }
 
   Stack imageAndInfo() {
     return Stack(
-            children: [
-              Image.network(
-                coverImage,
-                height: 220,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+      children: [
+        Image.network(
+          game.coverImage,
+          height: 220,
+          width: double.infinity,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return const Icon(Icons.broken_image, size: 80, color: Colors.grey);
+          },
+        ),
 
-              Container(
-                height: 220,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black.withOpacity(1),
-                    ],
-                  ),
+        Container(
+          height: 220,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.transparent, Colors.black.withOpacity(1)],
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 8,
+          left: 8,
+          right: 8,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                game.name,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
                 ),
               ),
-              Positioned(
-                bottom: 8,
-                left: 8,
-                right: 8,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: buildStars(rating),
-                    ),
-                  ],
-                ),
-              ),
+              const SizedBox(height: 4),
+              Row(children: buildStars(game.rating)),
             ],
-          );
+          ),
+        ),
+      ],
+    );
   }
 
   List<Widget> buildStars(double rating) {
@@ -132,7 +125,12 @@ class GameCard extends StatelessWidget {
     }
 
     stars.add(const SizedBox(width: 8));
-    stars.add(Text(rating.toString(), style: const TextStyle(color: Colors.white, fontSize: 14)));
+    stars.add(
+      Text(
+        rating.toString(),
+        style: const TextStyle(color: Colors.white, fontSize: 14),
+      ),
+    );
     return stars;
   }
 }
