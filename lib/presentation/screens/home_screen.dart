@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:proyecto_tp3/core/components/app_bar.dart';
 import 'package:proyecto_tp3/core/components/bottom_bar.dart';
-import 'package:proyecto_tp3/core/components/game_card.dart';
 import 'package:proyecto_tp3/provider/games_provider.dart';
-import 'package:proyecto_tp3/provider/library_provider.dart';
-import 'package:proyecto_tp3/repository/game_repository.dart';
+import 'package:proyecto_tp3/widget/game_card.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -21,7 +20,7 @@ class HomeScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Bienvenido de nuevo, Usuario',
+                'Bienvenido de nuevo, @Usuario',
                 style: TextStyle(color: Colors.white),
               ),
               SizedBox(height: 15),
@@ -34,7 +33,7 @@ class HomeScreen extends ConsumerWidget {
                 ),
               ),
               SizedBox(height: 15),
-              recentlyAdded(ref),
+              recentlyAdded(context, ref),
               SizedBox(height: 15),
               Text(
                 "Los Mas Valorados",
@@ -45,23 +44,36 @@ class HomeScreen extends ConsumerWidget {
                 ),
               ),
               SizedBox(height: 15),
-              recentlyAdded(ref),
+              recentlyAdded(context, ref),
+
             ],
           ),
         ),
       ),
       bottomNavigationBar: CustomBottomBar(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          GoRouter.of(context).go('/add_game');
+        },
+        child: const Icon(Icons.add),
+        tooltip: "Agregar Juego",
+      ),
     );
   }
 
-  SingleChildScrollView recentlyAdded(WidgetRef ref) {
+  SingleChildScrollView recentlyAdded(BuildContext context, WidgetRef ref) {
     final games = ref.watch(gamesProvider);
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         children: games.map((game) {
-          return GameCard(game: game);
+          return GestureDetector(
+          onTap: () {
+            context.push('/game_detail', extra: game);
+          },
+          child: GameCard(game: game),
+        );
         }).toList(),
       ),
     );

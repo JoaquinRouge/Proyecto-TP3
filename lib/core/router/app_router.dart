@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_tp3/core/domain/game.dart';
+import 'package:proyecto_tp3/presentation/screens/add_game_screen.dart';
+import 'package:proyecto_tp3/presentation/screens/game_detail_screen.dart';
 import 'package:proyecto_tp3/presentation/screens/home_screen.dart';
 import 'package:proyecto_tp3/presentation/screens/library_screen.dart';
 import 'package:proyecto_tp3/presentation/screens/login_screen.dart';
@@ -31,6 +33,18 @@ final GoRouter appRouter = GoRouter(
       path: '/profile',
       pageBuilder: (context, state) =>
           const NoTransitionPage(child: ProfileScreen()),
+    ),
+    GoRoute(
+      path: '/add_game',
+      pageBuilder: (context, state) =>
+          const NoTransitionPage(child: AgregarJuegoPage()),
+    ),
+    GoRoute(
+      path: '/game_detail',
+      builder: (context, state) {
+        final Game game = state.extra as Game;
+        return GameDetailPage(game: game);
+      },
     ),
   ],
 );

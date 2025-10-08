@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:proyecto_tp3/core/domain/game.dart';
@@ -255,4 +255,4 @@ List<Widget> buildStars(double rating) {
   stars.add(const SizedBox(width: 8));
 
   return stars;
-}
+} */

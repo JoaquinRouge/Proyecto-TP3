@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyecto_tp3/core/components/app_bar.dart';
 import 'package:proyecto_tp3/core/components/bottom_bar.dart';
-import 'package:proyecto_tp3/core/components/game_card.dart';
 import 'package:proyecto_tp3/provider/library_provider.dart';
+import 'package:proyecto_tp3/widget/game_card.dart';
 
 class LibraryScreen extends ConsumerWidget {
   const LibraryScreen({super.key});
