@@ -8,19 +8,19 @@ class LibraryNotifier extends StateNotifier<List<Game>> {
   }
 
   loadLibrary() {
-    state = LibraryRepo.library;
+    state = List.from(LibraryRepo.library);
   }
 
   addGameToLibrary(Game game) {
     LibraryRepo.addGameToLibrary(game);
     loadLibrary();
-    print("Nigga");
   }
 
   removeGameFromLibrary(int id) {
     LibraryRepo.removeGameFromLibrary(id);
     loadLibrary();
   }
+
 }
 
 final libraryProvider = StateNotifierProvider<LibraryNotifier, List<Game>>((

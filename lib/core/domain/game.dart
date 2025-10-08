@@ -1,8 +1,9 @@
 class Game {
-  String id;
+  int id;
   String name;
   String developer;
   List<String> genres;
+  List<String> platforms;
   double rating;
   String coverImage;
   String releaseDate;
@@ -12,6 +13,7 @@ class Game {
     required this.name,
     required this.developer,
     required this.genres,
+    required this.platforms,
     required this.rating,
     required this.coverImage,
     required this.releaseDate,

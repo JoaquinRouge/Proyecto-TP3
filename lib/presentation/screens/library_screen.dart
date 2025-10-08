@@ -11,7 +11,6 @@ class LibraryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final library = ref.watch(libraryProvider);
-    final libraryNotifier = ref.read(libraryProvider.notifier);
 
     return Scaffold(
       appBar: const CustomAppBar(title: "Mis Juegos"),
@@ -19,14 +18,23 @@ class LibraryScreen extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
-            children: library.map((game) {
+            children: library.isNotEmpty ? library.map((game) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: GameCard(
                   game: game,
                 ),
               );
-            }).toList(), // 👈 conversión a lista obligatoria
+            }).toList() : [
+              Center(
+                child: Text(
+                  "La Biblioteca esta vacía.",
+                  style: TextStyle(
+                    color: Colors.white
+                  )
+                ),
+              )
+            ],
           ),
         ),
       ),

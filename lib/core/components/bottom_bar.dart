@@ -31,25 +31,25 @@ class CustomBottomBar extends ConsumerWidget {
               onTap: () {
                 ref.read(pageProvider.notifier).state = '/home';
               },
-              child: navItem(context, HeroIcons.home, 'Home', '/home',ref),
+              child: navItem(context, HeroIcons.home, 'Inicio', '/home',ref),
             ),
             GestureDetector(
               onTap: () {
                 ref.read(pageProvider.notifier).state = '/library';
               },
-              child: navItem(context, HeroIcons.bookOpen, 'Library', '/library',ref),
+              child: navItem(context, HeroIcons.bookOpen, 'Biblioteca', '/library',ref),
             ),
             GestureDetector(
               onTap: () {
                 ref.read(pageProvider.notifier).state = '/search';
               },
-              child:navItem(context, HeroIcons.magnifyingGlass, 'Search', '/search',ref),
+              child:navItem(context, HeroIcons.magnifyingGlass, 'Buscar', '/search',ref),
             ),
             GestureDetector(
               onTap: () {
                 ref.read(pageProvider.notifier).state = '/profile';
               },
-              child: navItem(context, HeroIcons.user, 'Profile', '/profile',ref),
+              child: navItem(context, HeroIcons.user, 'Perfil', '/profile',ref),
             ),
           ],
         ),

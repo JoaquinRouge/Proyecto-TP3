@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:proyecto_tp3/core/domain/game.dart';
+import 'package:proyecto_tp3/widget/game_detail_bottom_sheet.dart';
 
 class GameCard extends ConsumerWidget {
   const GameCard({super.key, required this.game});
@@ -12,7 +12,12 @@ class GameCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () => {
-        //Mostrar detalle de juego
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (_) => GameDetailBottomSheet(game: game),
+        ),
       },
       child: SizedBox(
         width: 220,
@@ -33,7 +38,6 @@ class GameCard extends ConsumerWidget {
   }
 
   Expanded genresInfo(WidgetRef ref) {
-
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -49,12 +53,12 @@ class GameCard extends ConsumerWidget {
             const Spacer(),
             Align(
               alignment: Alignment.centerRight,
-                child: const Icon(
-                  Icons.chevron_right,
-                  color: Colors.white,
-                  size: 32,
-                ),
+              child: const Icon(
+                Icons.chevron_right,
+                color: Colors.white,
+                size: 32,
               ),
+            ),
           ],
         ),
       ),
