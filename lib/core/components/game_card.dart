@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:proyecto_tp3/core/domain/game.dart';
 
-class GameCard extends StatelessWidget {
+class GameCard extends ConsumerWidget {
   const GameCard({super.key, required this.game});
 
   final Game game;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () => {
-        //accion
+        //Mostrar detalle de juego
       },
       child: SizedBox(
         width: 220,
@@ -23,14 +25,15 @@ class GameCard extends StatelessWidget {
           color: const Color(0xFF1e2128),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [imageAndInfo(), genresInfo()],
+            children: [imageAndInfo(), genresInfo(ref)],
           ),
         ),
       ),
     );
   }
 
-  Expanded genresInfo() {
+  Expanded genresInfo(WidgetRef ref) {
+
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -45,13 +48,13 @@ class GameCard extends StatelessWidget {
             ),
             const Spacer(),
             Align(
-              alignment: Alignment.bottomRight,
-              child: const Icon(
-                Icons.add_circle,
-                color: Colors.white,
-                size: 32,
+              alignment: Alignment.centerRight,
+                child: const Icon(
+                  Icons.chevron_right,
+                  color: Colors.white,
+                  size: 32,
+                ),
               ),
-            ),
           ],
         ),
       ),

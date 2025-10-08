@@ -4,13 +4,14 @@ import 'package:proyecto_tp3/core/components/app_bar.dart';
 import 'package:proyecto_tp3/core/components/bottom_bar.dart';
 import 'package:proyecto_tp3/core/components/game_card.dart';
 import 'package:proyecto_tp3/provider/games_provider.dart';
+import 'package:proyecto_tp3/provider/library_provider.dart';
 import 'package:proyecto_tp3/repository/game_repository.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: CustomAppBar(title: "Home"),
       body: SingleChildScrollView(
