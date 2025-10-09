@@ -139,7 +139,7 @@ class GameDetailBottomSheet extends ConsumerWidget {
               index: entry.key,
               gameId: game.id,
             );
-          }).toList(),
+          }),
         ],
       ),
     );

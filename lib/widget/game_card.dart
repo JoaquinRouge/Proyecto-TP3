@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:proyecto_tp3/core/domain/game.dart';
 import 'package:proyecto_tp3/widget/game_detail_bottom_sheet.dart';
 
