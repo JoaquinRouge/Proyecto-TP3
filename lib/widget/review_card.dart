@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:proyecto_tp3/provider/review_provider.dart';
+import 'package:proyecto_tp3/core/domain/review.dart';
+import 'package:heroicons/heroicons.dart';
 
 class ReviewCard extends ConsumerWidget {
   final Review review;
@@ -14,78 +15,58 @@ class ReviewCard extends ConsumerWidget {
     required this.gameId,
   });
 
-  void _showReviewDialog(BuildContext context, WidgetRef ref, String? initialText) {
-    final controller = TextEditingController(text: initialText ?? '');
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text(initialText == null ? 'Agregar Reseña' : 'Editar Reseña'),
-        content: TextField(controller: controller, maxLines: 3),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar')),
-          ElevatedButton(
-            onPressed: () {
-              if (controller.text.trim().isNotEmpty) {
-                final notifier = ref.read(reviewsProvider(gameId).notifier);
-                if (initialText == null) {
-                  notifier.addReview(controller.text.trim());
-                } else {
-                  notifier.editReview(index, controller.text.trim());
-                }
-                Navigator.pop(context);
-              }
-            },
-            child: const Text('Guardar'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _confirmDelete(BuildContext context, WidgetRef ref) {
-    final notifier = ref.read(reviewsProvider(gameId).notifier);
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Confirmar Eliminación'),
-        content: const Text('¿Seguro que quieres eliminar esta reseña?'),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar')),
-          ElevatedButton(
-            onPressed: () {
-              notifier.removeReview(index);
-              Navigator.pop(context);
-            },
-            child: const Text('Eliminar'),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       color: const Color(0xFF1e2128),
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(review.content, style: const TextStyle(color: Colors.white, fontSize: 16)),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(
-                  onPressed: () => _showReviewDialog(context, ref, review.content),
-                  child: const Text('Editar', style: TextStyle(color: Colors.blue)),
+                const CircleAvatar(
+                  radius: 18,
+                  backgroundImage: AssetImage('assets/images/avatar.png'),
                 ),
-                TextButton(
-                  onPressed: () => _confirmDelete(context, ref),
-                  child: const Text('Eliminar', style: TextStyle(color: Colors.red)),
+                const SizedBox(width: 10),
+                const Text(
+                  'GamerPro',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Row(
+                  children: [
+                    const HeroIcon(HeroIcons.star, color: Colors.amber, size: 16),
+                    const SizedBox(width: 2),
+                    Text(
+                      review.rating.toStringAsFixed(1),
+                      style: const TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ],
+            ),
+            const SizedBox(height: 8),
+
+            Text(
+              review.content,
+              style: const TextStyle(color: Colors.white70, fontSize: 15, height: 1.3),
+            ),
+            const SizedBox(height: 12),
+
+            Text(
+              '10 de Enero de 2024',
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.6),
+                fontSize: 12,
+              ),
             ),
           ],
         ),

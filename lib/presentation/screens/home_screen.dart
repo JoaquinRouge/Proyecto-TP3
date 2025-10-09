@@ -52,11 +52,15 @@ class HomeScreen extends ConsumerWidget {
       ),
       bottomNavigationBar: CustomBottomBar(),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(100)
+        ),
         onPressed: () {
           GoRouter.of(context).go('/add_game');
         },
         child: const Icon(Icons.add),
-        tooltip: "Agregar Juego",
       ),
     );
   }

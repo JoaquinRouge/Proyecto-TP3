@@ -1,8 +1,12 @@
-/* import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:proyecto_tp3/core/domain/game.dart';
+import 'package:proyecto_tp3/core/domain/review.dart';
 import 'package:proyecto_tp3/provider/library_provider.dart';
+import 'package:proyecto_tp3/provider/review_provider.dart';
+import 'package:proyecto_tp3/widget/add_review_bottom_sheet.dart';
+import 'package:proyecto_tp3/widget/review_card.dart';
 
 class GameDetailBottomSheet extends ConsumerWidget {
   const GameDetailBottomSheet({super.key, required this.game});
@@ -14,6 +18,8 @@ class GameDetailBottomSheet extends ConsumerWidget {
     final library = ref.watch(libraryProvider);
     final libraryNotifier = ref.read(libraryProvider.notifier);
     final isInLibrary = library.any((g) => g.id == game.id);
+
+    final reviews = ref.watch(reviewsProvider(game.id));
 
     return DraggableScrollableSheet(
       expand: true,
@@ -63,12 +69,79 @@ class GameDetailBottomSheet extends ConsumerWidget {
                       libraryNotifier.addGameToLibrary(game);
                     }
                   }),
+                  gameReviews(context, reviews),
                 ],
               ),
             ),
           ),
         );
       },
+    );
+  }
+
+  Padding gameReviews(BuildContext context, List<Review> reviews) {
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Reseñas',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                width: 160,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        12,
+                      ), // bordes redondeados
+                    ),
+                  ),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (_) => Padding(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(
+                            context,
+                          ).viewInsets.bottom, // para teclado
+                        ),
+                        child: ReviewBottomSheet(gameId: game.id,),
+                      ),
+                    );
+                  },
+                  child: Text("Agregar Reseña"),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 25),
+          if (reviews.isEmpty)
+            const Text(
+              'No hay reseñas aún',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ...reviews.asMap().entries.map((entry) {
+            return ReviewCard(
+              review: entry.value,
+              index: entry.key,
+              gameId: game.id,
+            );
+          }).toList(),
+        ],
+      ),
     );
   }
 
@@ -121,8 +194,7 @@ class GameDetailBottomSheet extends ConsumerWidget {
                         backgroundColor: isInLibrary
                             ? Colors.red
                             : Colors.green,
-                        behavior: SnackBarBehavior
-                            .floating, // esto lo hace "flotante"
+                        behavior: SnackBarBehavior.floating,
                         margin: EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 8,
@@ -255,4 +327,4 @@ List<Widget> buildStars(double rating) {
   stars.add(const SizedBox(width: 8));
 
   return stars;
-} */
+}
