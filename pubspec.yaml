@@ -14,6 +14,7 @@ dependencies:
   heroicons: ^0.11.0
   flutter_rating_bar: ^4.0.1
   cloud_firestore: ^6.0.2
+  http: ^1.5.0
 
 dev_dependencies:
   flutter_lints: ^5.0.0

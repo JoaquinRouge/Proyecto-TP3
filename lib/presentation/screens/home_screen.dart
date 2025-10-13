@@ -25,7 +25,7 @@ class HomeScreen extends ConsumerWidget {
               ),
               SizedBox(height: 15),
               Text(
-                "Recien Agregados",
+                "Recomendados para ti",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 25,
@@ -36,7 +36,7 @@ class HomeScreen extends ConsumerWidget {
               recentlyAdded(context, ref),
               SizedBox(height: 15),
               Text(
-                "Los Mas Valorados",
+                "Lo mejor en Estrategia",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 25,
@@ -44,7 +44,7 @@ class HomeScreen extends ConsumerWidget {
                 ),
               ),
               SizedBox(height: 15),
-              recentlyAdded(context, ref),
+              mostRated(context, ref),
 
             ],
           ),
@@ -65,20 +65,48 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  SingleChildScrollView recentlyAdded(BuildContext context, WidgetRef ref) {
-    final games = ref.watch(gamesProvider);
+  SingleChildScrollView mostRated(BuildContext context, WidgetRef ref) {
+    final gamesAsync = ref.watch(mostRatedProvider);
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: games.map((game) {
-          return GestureDetector(
-          onTap: () {
-            context.push('/game_detail', extra: game);
-          },
-          child: GameCard(game: game),
-        );
-        }).toList(),
+    return gamesAsync.when(
+      data: (games) => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: games.map((game) {
+            return GameCard(game:game);
+          }).toList(),
+        ),
+      ),
+      loading: () => const SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Center(child: CircularProgressIndicator()),
+      ),
+      error: (error, stack) => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Center(child: Text('Error: $error')),
+      ),
+    );
+  }
+
+    SingleChildScrollView recentlyAdded(BuildContext context, WidgetRef ref) {
+    final gamesAsync = ref.watch(gamesProvider);
+
+    return gamesAsync.when(
+      data: (games) => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: games.map((game) {
+            return GameCard(game: game);
+          }).toList(),
+        ),
+      ),
+      loading: () => const SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Center(child: CircularProgressIndicator()),
+      ),
+      error: (error, stack) => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Center(child: Text('Error: $error')),
       ),
     );
   }

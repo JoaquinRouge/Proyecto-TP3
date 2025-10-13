@@ -15,8 +15,8 @@ class GameCard extends ConsumerWidget {
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
-          backgroundColor: Colors.transparent, 
-          builder: (context) => GameDetailBottomSheet(game: game),
+          backgroundColor: Colors.transparent,
+          builder: (context) => GameDetailBottomSheet(gameId: game.id),
         );
       },
       child: SizedBox(
@@ -68,14 +68,26 @@ class GameCard extends ConsumerWidget {
   Stack imageAndInfo() {
     return Stack(
       children: [
-        Image.network(
-          game.coverImage,
+        SizedBox(
           height: 220,
           width: double.infinity,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            return const Icon(Icons.broken_image, size: 80, color: Colors.grey);
-          },
+          child: Image.network(
+            game.coverImage,
+            height: 220,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return const Center(child: CircularProgressIndicator());
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return const Icon(
+                Icons.broken_image,
+                size: 80,
+                color: Colors.grey,
+              );
+            },
+          ),
         ),
 
         Container(
