@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyecto_tp3/core/domain/review.dart';
 import 'package:proyecto_tp3/repository/review_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// Provider global del repositorio de reseñas.
 final reviewRepositoryProvider = Provider<ReviewRepository>((ref) {
@@ -9,6 +10,9 @@ final reviewRepositoryProvider = Provider<ReviewRepository>((ref) {
 
 /// Notifier que usa el repositorio para manejar reseñas.
 class ReviewsNotifier extends StateNotifier<List<Review>> {
+
+  final db = FirebaseFirestore.instance;
+
   final ReviewRepository _repository;
   final int _gameId;
 
