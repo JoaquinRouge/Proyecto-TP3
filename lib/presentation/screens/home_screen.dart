@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +13,8 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userEmail = FirebaseAuth.instance.currentUser?.email;
+    final db = FirebaseFirestore.instance;
+    final uid = FirebaseAuth.instance.currentUser?.uid;
 
     return Scaffold(
       appBar: CustomAppBar(title: "Home"),
@@ -22,9 +24,25 @@ class HomeScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Bienvenido de nuevo, ${userEmail ?? "Usuario"}',
-                style: TextStyle(color: Colors.white),
+              FutureBuilder<DocumentSnapshot>(
+                future: db.collection('usuarios').doc(uid).get(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  String username = "Usuario";
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      snapshot.hasData) {
+                    final data = snapshot.data!.data() as Map<String, dynamic>?;
+                    username = data?['username'] ?? "Usuario";
+                  }
+                  return Text(
+                    'Bienvenido de nuevo, $username',
+                    style: TextStyle(color: Colors.white),
+                  );
+                },
               ),
               SizedBox(height: 15),
               Text(

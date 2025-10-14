@@ -15,4 +15,5 @@ class AuthRepository {
   Future<void> logout() => _firebaseAuthService.logout();
 
   User? get currentUser => _firebaseAuthService.currentUser;
+
 }

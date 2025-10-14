@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_tp3/core/components/app_bar.dart';
@@ -9,6 +11,10 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    final uid = user?.uid;
+    final db = FirebaseFirestore.instance;
+
     return Scaffold(
       appBar: CustomAppBar(title: "Profile"),
       body: Column(
@@ -28,18 +34,18 @@ class ProfileScreen extends StatelessWidget {
                       bottom: 16,
                       right: 16,
                       child: Container(
-                        width: 32, // reducido
-                        height: 32, // reducido
+                        width: 32,
+                        height: 32,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
                         ),
                         child: Center(
                           child: Container(
-                            width: 20, // reducido
-                            height: 20, // reducido
+                            width: 20,
+                            height: 20,
                             decoration: BoxDecoration(
-                              color: Colors.green, // verde si está online
+                              color: Colors.green,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -49,17 +55,31 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 20),
-                Text(
-                  "Nombre de usuario",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                FutureBuilder<DocumentSnapshot>(
+                  future: db.collection('usuarios').doc(uid).get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    String username = "Usuario";
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.hasData) {
+                      final data = snapshot.data!.data() as Map<String, dynamic>?;
+                      username = data?['username'] ?? "Usuario";
+                    }
+                    return Text(
+                      username,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  },
                 ),
                 SizedBox(height: 10),
                 Text(
-                  "Correo",
+                  user?.email ?? "Correo no disponible",
                   style: TextStyle(color: Colors.white70, fontSize: 16),
                 ),
                 SizedBox(height: 60),
