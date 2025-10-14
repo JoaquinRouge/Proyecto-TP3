@@ -7,12 +7,14 @@ class ReviewCard extends ConsumerWidget {
   final Review review;
   final int index;
   final int gameId;
+  final String reviewerUsername; // Placeholder username
 
   const ReviewCard({
     super.key,
     required this.review,
     required this.index,
     required this.gameId,
+    required this.reviewerUsername,
   });
 
   @override
@@ -33,9 +35,9 @@ class ReviewCard extends ConsumerWidget {
                   backgroundImage: AssetImage('assets/images/avatar.png'),
                 ),
                 const SizedBox(width: 10),
-                const Text(
-                  'GamerPro',
-                  style: TextStyle(
+                Text(
+                  reviewerUsername,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),

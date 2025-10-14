@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:proyecto_tp3/core/components/app_bar.dart';
 import 'package:proyecto_tp3/core/components/bottom_bar.dart';
 
@@ -79,7 +80,9 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.go('/login');
+                  },
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all(Colors.red),
                     minimumSize: WidgetStateProperty.all(Size(250, 50)),

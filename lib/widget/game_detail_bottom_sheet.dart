@@ -149,6 +149,7 @@ class GameDetailBottomSheet extends ConsumerWidget {
               review: entry.value,
               index: entry.key,
               gameId: game.id,
+              reviewerUsername: "pepe",
             );
           }),
         ],
