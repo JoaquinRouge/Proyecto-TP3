@@ -8,7 +8,7 @@ import 'package:proyecto_tp3/presentation/screens/register_screen.dart';
 import 'package:proyecto_tp3/presentation/screens/search_screen.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/home',
+  initialLocation: '/login',
   routes: [
     GoRoute(path: '/login', builder: (context, state) => LoginScreen()),
     GoRoute(path: '/register', builder: (context, state) => RegisterScreen()),

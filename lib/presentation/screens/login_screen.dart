@@ -1,11 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:proyecto_tp3/provider/auth_provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    final authState = ref.watch(authControllerProvider);
+
+    ref.listen(authControllerProvider, (prev, next) {
+      next.whenOrNull(
+        data: (user) => {
+          if (user != null) {context.go("/home")},
+        },
+        error: (e, _) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+          );
+        },
+      );
+    });
+
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -33,6 +52,7 @@ class LoginScreen extends StatelessWidget {
                 // Campo de correo
                 TextField(
                   style: const TextStyle(color: Colors.white),
+                  controller: emailController,
                   decoration: InputDecoration(
                     hintText: 'Correo electrónico',
                     hintStyle: const TextStyle(color: Colors.white70),
@@ -50,6 +70,7 @@ class LoginScreen extends StatelessWidget {
 
                 // Campo de contraseña
                 TextField(
+                  controller: passwordController,
                   obscureText: true,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
@@ -69,26 +90,40 @@ class LoginScreen extends StatelessWidget {
 
                 // Botón de inicio de sesión
                 ElevatedButton(
-                  onPressed: () {
-                    context.go('/home');
-                  },
+                  onPressed: authState.isLoading
+                      ? null
+                      : () {
+                          ref
+                              .read(authControllerProvider.notifier)
+                              .login(
+                                emailController.text,
+                                passwordController.text,
+                              );
+                        },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(
-                      context,
-                    ).colorScheme.primary, // azul oscuro
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: const Text(
-                    'Iniciar sesión',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: authState.isLoading
+                      ? const SizedBox(
+                          height: 22,
+                          width: 22,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text(
+                          'Iniciar sesión',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
 
                 const SizedBox(height: 24),

@@ -1,17 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:proyecto_tp3/provider/auth_provider.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends ConsumerWidget {
   const RegisterScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    final authState = ref.watch(authControllerProvider);
+
+    ref.listen(authControllerProvider, (prev, next) {
+      next.whenOrNull(
+        data: (user) => {
+          if (user != null) {context.go("/home")},
+        },
+        error: (e, _) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+          );
+        },
+      );
+    });
+
     return Scaffold(
-      // fondo oscuro
       body: SafeArea(
         child: Stack(
           children: [
-            // Flecha atrás arriba a la izquierda
             Positioned(
               top: 16,
               left: 15,
@@ -22,8 +39,6 @@ class RegisterScreen extends StatelessWidget {
                 },
               ),
             ),
-
-            // Contenido principal
             Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -32,8 +47,6 @@ class RegisterScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 40),
-
-                    // Título
                     const Text(
                       'Crear cuenta',
                       textAlign: TextAlign.center,
@@ -44,31 +57,11 @@ class RegisterScreen extends StatelessWidget {
                       ),
                     ),
 
-                    const SizedBox(height: 40),
-
-                    // Nombre de usuario
-                    TextField(
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        hintText: 'Nombre de usuario',
-                        hintStyle: const TextStyle(color: Colors.white70),
-                        prefixIcon: const Icon(
-                          Icons.person,
-                          color: Colors.white70,
-                        ),
-                        filled: true,
-                        fillColor: const Color(0xFF1E1E1E),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-
                     const SizedBox(height: 16),
 
                     // Correo electrónico
                     TextField(
+                      controller: emailController,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         hintText: 'Correo electrónico',
@@ -90,6 +83,7 @@ class RegisterScreen extends StatelessWidget {
 
                     // Contraseña
                     TextField(
+                      controller: passwordController,
                       obscureText: true,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
@@ -112,9 +106,16 @@ class RegisterScreen extends StatelessWidget {
 
                     // Botón de crear cuenta
                     ElevatedButton(
-                      onPressed: () {
-                        // TODO: acción para crear cuenta
-                      },
+                      onPressed: authState.isLoading
+                          ? null
+                          : () {
+                              ref
+                                  .read(authControllerProvider.notifier)
+                                  .register(
+                                    emailController.text,
+                                    passwordController.text,
+                                  );
+                            },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(
                           context,
@@ -124,14 +125,23 @@ class RegisterScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: const Text(
-                        'Registrarse',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      child: authState.isLoading
+                          ? const SizedBox(
+                              height: 22,
+                              width: 22,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.5,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text(
+                              'Iniciar sesión',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                     ),
 
                     const SizedBox(height: 24),
