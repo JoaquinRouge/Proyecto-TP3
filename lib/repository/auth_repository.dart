@@ -9,8 +9,8 @@ class AuthRepository {
   Future<User?> login(String email, String password) =>
       _firebaseAuthService.login(email, password);
 
-  Future<User?> register(String email, String password) =>
-      _firebaseAuthService.register(email, password);
+  Future<User?> register(String email, String username, String password) =>
+      _firebaseAuthService.register(email, username, password);
 
   Future<void> logout() => _firebaseAuthService.logout();
 

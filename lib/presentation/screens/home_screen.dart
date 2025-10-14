@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,9 +10,10 @@ import 'package:proyecto_tp3/widget/game_card.dart';
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userEmail = FirebaseAuth.instance.currentUser?.email;
+
     return Scaffold(
       appBar: CustomAppBar(title: "Home"),
       body: SingleChildScrollView(
@@ -20,8 +22,8 @@ class HomeScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Bienvenido de nuevo, @Usuario',
+              Text(
+                'Bienvenido de nuevo, ${userEmail ?? "Usuario"}',
                 style: TextStyle(color: Colors.white),
               ),
               SizedBox(height: 15),
@@ -46,7 +48,6 @@ class HomeScreen extends ConsumerWidget {
               ),
               SizedBox(height: 15),
               mostRated(context, ref),
-
             ],
           ),
         ),
@@ -55,9 +56,7 @@ class HomeScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(100)
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
         onPressed: () {
           GoRouter.of(context).go('/add_game');
         },
@@ -74,7 +73,7 @@ class HomeScreen extends ConsumerWidget {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: games.map((game) {
-            return GameCard(game:game);
+            return GameCard(game: game);
           }).toList(),
         ),
       ),
@@ -89,7 +88,7 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-    SingleChildScrollView recentlyAdded(BuildContext context, WidgetRef ref) {
+  SingleChildScrollView recentlyAdded(BuildContext context, WidgetRef ref) {
     final gamesAsync = ref.watch(gamesProvider);
 
     return gamesAsync.when(

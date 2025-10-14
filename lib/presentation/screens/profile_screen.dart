@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_tp3/core/components/app_bar.dart';
 import 'package:proyecto_tp3/core/components/bottom_bar.dart';
+import 'package:proyecto_tp3/services/firebase_auth_service.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -81,6 +82,7 @@ class ProfileScreen extends StatelessWidget {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
+                    FirebaseAuthService().logout();
                     context.go('/login');
                   },
                   style: ButtonStyle(

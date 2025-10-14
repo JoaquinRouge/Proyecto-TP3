@@ -9,6 +9,7 @@ class RegisterScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final emailController = TextEditingController();
+    final usernameController = TextEditingController();
     final passwordController = TextEditingController();
     final authState = ref.watch(authControllerProvider);
 
@@ -81,6 +82,28 @@ class RegisterScreen extends ConsumerWidget {
 
                     const SizedBox(height: 16),
 
+                    //Username
+                    TextField(
+                      controller: usernameController,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        hintText: 'Nombre de usuario',
+                        hintStyle: const TextStyle(color: Colors.white70),
+                        prefixIcon: const Icon(
+                          Icons.person,
+                          color: Colors.white70,
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFF1E1E1E),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
                     // Contraseña
                     TextField(
                       controller: passwordController,
@@ -109,10 +132,29 @@ class RegisterScreen extends ConsumerWidget {
                       onPressed: authState.isLoading
                           ? null
                           : () {
+                              final email = emailController.text.trim();
+                              final username = usernameController.text.trim();
+                              final password = passwordController.text.trim();
+
+                              if (email.isEmpty ||
+                                  username.isEmpty ||
+                                  password.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Por favor, completa todos los campos.',
+                                    ),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                                return;
+                              }
+
                               ref
                                   .read(authControllerProvider.notifier)
                                   .register(
                                     emailController.text,
+                                    usernameController.text,
                                     passwordController.text,
                                   );
                             },

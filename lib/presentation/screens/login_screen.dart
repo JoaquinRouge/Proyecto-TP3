@@ -93,6 +93,21 @@ class LoginScreen extends ConsumerWidget {
                   onPressed: authState.isLoading
                       ? null
                       : () {
+                          final email = emailController.text.trim();
+                          final password = passwordController.text.trim();
+
+                          if (email.isEmpty || password.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Por favor, completa todos los campos.',
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                            return;
+                          }
+
                           ref
                               .read(authControllerProvider.notifier)
                               .login(

@@ -33,10 +33,10 @@ class AuthController extends StateNotifier<AsyncValue<User?>> {
     }
   }
 
-  Future<void> register(String email, String password) async {
+  Future<void> register(String email, String username, String password) async {
     state = const AsyncValue.loading();
     try {
-      final user = await _repo.register(email, password);
+      final user = await _repo.register(email,username, password);
       state = AsyncValue.data(user);
     } on FirebaseAuthException catch (e) {
       state = AsyncValue.error(e.message ?? 'Error de registro', StackTrace.current);
