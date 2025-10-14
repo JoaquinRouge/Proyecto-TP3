@@ -1,31 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:proyecto_tp3/core/domain/review.dart';
 
 class ReviewRepository {
-  final Map<int, List<Review>> _reviewsByGame = {};
-  
-  List<Review> getReviews(int gameId) {
-    return _reviewsByGame[gameId] ?? [];
+  final db = FirebaseFirestore.instance;
+
+  Future<List<Review>> getReviews(int gameId) async {
+    final snapshot = await db
+        .collection('reviews')
+        .where('gameId', isEqualTo: gameId)
+        .get();
+
+    return snapshot.docs
+        .map((doc) => Review.fromFirestore(doc.id, doc.data()))
+        .toList();
   }
 
-  void addReview(int gameId, Review review) {
-    final reviews = List<Review>.from(_reviewsByGame[gameId] ?? []);
-    reviews.add(review);
-    _reviewsByGame[gameId] = reviews;
+  Future<void> addReview(Review review) async {
+    await db.collection('reviews').add(review.toFirestore());
   }
 
-  void editReview(int gameId, int index, Review review) {
-    final reviews = List<Review>.from(_reviewsByGame[gameId] ?? []);
-    if (index >= 0 && index < reviews.length) {
-      reviews[index] = review;
-      _reviewsByGame[gameId] = reviews;
-    }
+  Future<void> editReview(String reviewId, Review review) async {
+    await db.collection('reviews').doc(reviewId).set(review.toFirestore());
   }
 
-  void removeReview(int gameId, int index) {
-    final reviews = List<Review>.from(_reviewsByGame[gameId] ?? []);
-    if (index >= 0 && index < reviews.length) {
-      reviews.removeAt(index);
-      _reviewsByGame[gameId] = reviews;
-    }
+  Future<void> removeReview(String reviewId) async {
+    await db.collection('reviews').doc(reviewId).delete();
   }
 }

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:proyecto_tp3/provider/review_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReviewBottomSheet extends ConsumerStatefulWidget {
   final void Function(double rating, String review)? onSubmit;
@@ -150,8 +152,22 @@ class _ReviewBottomSheetState extends ConsumerState<ReviewBottomSheet> {
           ),
           padding: const EdgeInsets.symmetric(vertical: 14),
         ),
-        onPressed: () {
-          ref.read(reviewsProvider(widget.gameId).notifier).addReview(rating, _controller.text.trim());
+        onPressed: () async {
+          final user = FirebaseAuth.instance.currentUser;
+          String username = "Usuario";
+          if (user != null) {
+            final uid = user.uid;
+            final doc = await FirebaseFirestore.instance.collection('usuarios').doc(uid).get();
+            final data = doc.data();
+            if (data != null && data['username'] != null) {
+              username = data['username'];
+            }
+          }
+          await ref.read(reviewsProvider(widget.gameId).notifier).addReview(
+            rating,
+            _controller.text.trim(),
+            username,
+          );
           Navigator.pop(context);
         },
         child: const Text(

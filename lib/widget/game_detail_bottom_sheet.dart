@@ -28,7 +28,7 @@ class GameDetailBottomSheet extends ConsumerWidget {
 
         final game = games[0];
         final isInLibrary = library.any((g) => g.id == game.id);
-        final reviews = ref.watch(reviewsProvider(game.id));
+        final reviewsAsync = ref.watch(reviewsProvider(game.id));
 
         return DraggableScrollableSheet(
           expand: true,
@@ -80,7 +80,11 @@ class GameDetailBottomSheet extends ConsumerWidget {
                           libraryNotifier.addGameToLibrary(game);
                         }
                       }),
-                      gameReviews(context, game, reviews),
+                      reviewsAsync.when(
+                        data: (reviews) => gameReviews(context, game, reviews),
+                        loading: () => const Center(child: CircularProgressIndicator()),
+                        error: (e, st) => Center(child: Text('Error: $e')),
+                      ),
                     ],
                   ),
                 ),
@@ -149,7 +153,7 @@ class GameDetailBottomSheet extends ConsumerWidget {
               review: entry.value,
               index: entry.key,
               gameId: game.id,
-              reviewerUsername: "pepe",
+              reviewerUsername: entry.value.reviewerUsername,
             );
           }),
         ],
