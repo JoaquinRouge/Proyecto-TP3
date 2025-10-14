@@ -1,16 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyecto_tp3/core/components/app_bar.dart';
 import 'package:proyecto_tp3/core/components/bottom_bar.dart';
+import 'package:proyecto_tp3/provider/games_provider.dart';
+import 'package:proyecto_tp3/widget/game_card.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
 
   @override
+  ConsumerState<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends ConsumerState<SearchScreen> {
+  final TextEditingController _controller = TextEditingController();
+  String _query = '';
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    final gamesAsync = ref.watch(searchGamesProvider(_query));
+
+    return Scaffold(
       appBar: CustomAppBar(title: "Search Games"),
-      body: Center(
-        child: Text('Bienvenido a la pantalla de búsqueda'),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                hintText: 'Search for games...',
+                prefixIcon: Icon(Icons.search),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _query = value;
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: gamesAsync.when(
+              data: (games) => GridView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // Dos columnas
+                  childAspectRatio: 0.5, // Ajusta según el diseño de GameCard
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                ),
+                itemCount: games.length,
+                itemBuilder: (context, index) => GameCard(game: games[index]),
+              ),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (e, st) => Center(child: Text('Error: $e')),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: CustomBottomBar(),
     );

@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyecto_tp3/core/domain/review.dart';
 import 'package:proyecto_tp3/repository/review_repository.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 final reviewRepositoryProvider = Provider<ReviewRepository>((ref) {
   return ReviewRepository();

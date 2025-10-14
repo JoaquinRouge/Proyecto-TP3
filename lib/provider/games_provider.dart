@@ -16,6 +16,15 @@ class GamesNotifier extends StateNotifier<AsyncValue<List<Game>>> {
     }
   }
 
+  Future<void> searchGames(String name) async {
+    try {
+      final games = await repository.fetchGamesByName(name);
+      state = AsyncValue.data(games);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+    }
+  }
+
   Future<void> loadStrategy() async {
     try {
       final games = await repository.fetchStrategy();
@@ -41,6 +50,16 @@ final gamesProvider =
       final repo = GameRepository();
       return GamesNotifier(repo)..loadGames();
     });
+
+final searchGamesProvider =
+    StateNotifierProvider.family<GamesNotifier, AsyncValue<List<Game>>, String>(
+  (ref, query) {
+    final repo = GameRepository();
+    final notifier = GamesNotifier(repo);
+    notifier.searchGames(query); // le pasamos la query
+    return notifier;
+  },
+);
 
 final mostRatedProvider =
     StateNotifierProvider<GamesNotifier, AsyncValue<List<Game>>>((ref) {

@@ -21,6 +21,20 @@ class GameRepository {
     }
   }
 
+  Future<List<Game>> fetchGamesByName(String name) async {
+    final url = Uri.parse('$baseUrl/games?key=$apiKey&search=$name&page_size=15');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      final List<dynamic> results = data['results'];
+      return results.map((json) => Game.fromJson(json)).toList();
+    } else {
+      throw Exception('Error al obtener juegos: ${response.statusCode}');
+    }
+  }
+
   Future<List<Game>> fetchStrategy() async {
     final url = Uri.parse(
       '$baseUrl/games?key=$apiKey&genres=strategy&page_size=10',
