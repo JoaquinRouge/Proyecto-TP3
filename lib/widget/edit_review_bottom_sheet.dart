@@ -171,9 +171,24 @@ class _ReviewBottomSheetState extends ConsumerState<EditReviewBottomSheet> {
           padding: const EdgeInsets.symmetric(vertical: 14),
         ),
         onPressed: () async {
-          await ref
-              .read(reviewsProvider(widget.gameId).notifier)
-              .editReview(widget.reviewId, rating, controller.text.trim());
+          if (rating == widget.rating && controller.text == widget.content) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                backgroundColor: Colors.red,
+                content: Text('No hubo modificación en los campos.'),
+              ),
+            );
+          } else {
+            await ref
+                .read(reviewsProvider(widget.gameId).notifier)
+                .editReview(widget.reviewId, rating, controller.text.trim());
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                backgroundColor: Colors.green,
+                content: Text('Reseña modificada'),
+              ),
+            );
+          }
           Navigator.pop(context);
         },
         child: const Text(
