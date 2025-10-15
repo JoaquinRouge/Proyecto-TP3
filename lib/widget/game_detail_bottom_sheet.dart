@@ -7,6 +7,7 @@ import 'package:proyecto_tp3/provider/games_provider.dart';
 import 'package:proyecto_tp3/provider/library_provider.dart';
 import 'package:proyecto_tp3/provider/review_provider.dart';
 import 'package:proyecto_tp3/widget/add_review_bottom_sheet.dart';
+import 'package:proyecto_tp3/widget/edit_review_bottom_sheet.dart';
 import 'package:proyecto_tp3/widget/review_card.dart';
 
 class GameDetailBottomSheet extends ConsumerWidget {
@@ -81,8 +82,10 @@ class GameDetailBottomSheet extends ConsumerWidget {
                         }
                       }),
                       reviewsAsync.when(
-                        data: (reviews) => gameReviews(context, game, reviews),
-                        loading: () => const Center(child: CircularProgressIndicator()),
+                        data: (reviews) =>
+                            gameReviews(context, game, reviews, ref),
+                        loading: () =>
+                            const Center(child: CircularProgressIndicator()),
                         error: (e, st) => Center(child: Text('Error: $e')),
                       ),
                     ],
@@ -98,7 +101,14 @@ class GameDetailBottomSheet extends ConsumerWidget {
     );
   }
 
-  Padding gameReviews(BuildContext context, Game game, List<Review> reviews) {
+  Padding gameReviews(
+    BuildContext context,
+    Game game,
+    List<Review> reviews,
+    WidgetRef ref,
+  ) {
+    final personalReviewAsync = ref.watch(personalReviewProvider(game.id));
+
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -116,28 +126,74 @@ class GameDetailBottomSheet extends ConsumerWidget {
               ),
               SizedBox(
                 width: 160,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (_) => Padding(
-                        padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom,
+                child: personalReviewAsync.when(
+                  data: (review) {
+                    if (review != null) {
+                      return ElevatedButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (_) => Padding(
+                              padding: EdgeInsets.only(
+                                bottom: MediaQuery.of(
+                                  context,
+                                ).viewInsets.bottom,
+                              ),
+                              child: EditReviewBottomSheet(
+                                gameId: game.id,
+                                reviewId: review.id,
+                                rating: review.rating,
+                                content: review.content,
+                              ),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primary,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
-                        child: ReviewBottomSheet(gameId: game.id),
-                      ),
-                    );
+                        child: const Text("Editar mi reseña"),
+                      );
+                    } else {
+                      return ElevatedButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (_) => Padding(
+                              padding: EdgeInsets.only(
+                                bottom: MediaQuery.of(
+                                  context,
+                                ).viewInsets.bottom,
+                              ),
+                              child: ReviewBottomSheet(gameId: game.id),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primary,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text("Agregar reseña"),
+                      );
+                    }
                   },
-                  child: const Text("Agregar Reseña"),
+
+                  loading: () => const Text("Cargando..."),
+                  error: (_, __) => const Text("Agregar reseña"),
                 ),
               ),
             ],
@@ -207,8 +263,9 @@ class GameDetailBottomSheet extends ConsumerWidget {
                               : 'Juego añadido a la biblioteca',
                           style: const TextStyle(color: Colors.white),
                         ),
-                        backgroundColor:
-                            isInLibrary ? Colors.red : Colors.green,
+                        backgroundColor: isInLibrary
+                            ? Colors.red
+                            : Colors.green,
                         behavior: SnackBarBehavior.floating,
                         margin: const EdgeInsets.symmetric(
                           horizontal: 16,

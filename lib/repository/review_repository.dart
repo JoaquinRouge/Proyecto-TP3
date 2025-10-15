@@ -15,12 +15,35 @@ class ReviewRepository {
         .toList();
   }
 
+  Future<Review?> getPersonalReview(int gameId, String reviewerUsername) async {
+    final snapshot = await db
+        .collection("reviews")
+        .where('gameId', isEqualTo: gameId)
+        .where('reviewerUsername', isEqualTo: reviewerUsername)
+        .get();
+
+    if (snapshot.docs.isEmpty) {
+      return null;
+    }
+
+    final doc = snapshot.docs.first;
+
+    return Review.fromFirestore(doc.id, doc.data());
+  }
+
   Future<void> addReview(Review review) async {
     await db.collection('reviews').add(review.toFirestore());
   }
 
-  Future<void> editReview(String reviewId, Review review) async {
-    await db.collection('reviews').doc(reviewId).set(review.toFirestore());
+  Future<void> editReview(
+    String reviewId,
+    double rating,
+    String content,
+  ) async {
+    await db.collection('reviews').doc(reviewId).update({
+      'rating': rating,
+      'content': content,
+    });
   }
 
   Future<void> removeReview(String reviewId) async {

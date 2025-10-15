@@ -161,7 +161,7 @@ class RegisterScreen extends ConsumerWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(
                           context,
-                        ).colorScheme.primary, // azul oscuro
+                        ).colorScheme.primary,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -177,7 +177,7 @@ class RegisterScreen extends ConsumerWidget {
                               ),
                             )
                           : const Text(
-                              'Iniciar sesión',
+                              'Registrarse',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.white,
@@ -188,7 +188,6 @@ class RegisterScreen extends ConsumerWidget {
 
                     const SizedBox(height: 24),
 
-                    // Link a iniciar sesión
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

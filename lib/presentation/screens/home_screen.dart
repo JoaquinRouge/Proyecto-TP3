@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_tp3/core/components/app_bar.dart';
 import 'package:proyecto_tp3/core/components/bottom_bar.dart';
 import 'package:proyecto_tp3/provider/games_provider.dart';
+import 'package:proyecto_tp3/provider/username_provider.dart';
 import 'package:proyecto_tp3/widget/game_card.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -13,39 +12,29 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final db = FirebaseFirestore.instance;
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final usernameAsync = ref.watch(usernameProvider);
 
     return Scaffold(
-      appBar: CustomAppBar(title: "Home"),
+      appBar: const CustomAppBar(title: "Home"),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FutureBuilder<DocumentSnapshot>(
-                future: db.collection('usuarios').doc(uid).get(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  String username = "Usuario";
-                  if (snapshot.connectionState == ConnectionState.done &&
-                      snapshot.hasData) {
-                    final data = snapshot.data!.data() as Map<String, dynamic>?;
-                    username = data?['username'] ?? "Usuario";
-                  }
-                  return Text(
-                    'Bienvenido de nuevo, $username',
-                    style: TextStyle(color: Colors.white),
-                  );
-                },
+              usernameAsync.when(
+                data: (username) => Text(
+                  'Bienvenido de nuevo, ${username ?? "Usuario"}',
+                  style: const TextStyle(color: Colors.white),
+                ),
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, _) => const Text(
+                  'Error al cargar usuario',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-              SizedBox(height: 15),
-              Text(
+              const SizedBox(height: 15),
+              const Text(
                 "Recomendados para ti",
                 style: TextStyle(
                   color: Colors.white,
@@ -53,10 +42,10 @@ class HomeScreen extends ConsumerWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               recentlyAdded(context, ref),
-              SizedBox(height: 15),
-              Text(
+              const SizedBox(height: 15),
+              const Text(
                 "Lo mejor en Estrategia",
                 style: TextStyle(
                   color: Colors.white,
@@ -64,13 +53,13 @@ class HomeScreen extends ConsumerWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               mostRated(context, ref),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: CustomBottomBar(),
+      bottomNavigationBar: const CustomBottomBar(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
@@ -82,50 +71,50 @@ class HomeScreen extends ConsumerWidget {
       ),
     );
   }
+}
 
-  SingleChildScrollView mostRated(BuildContext context, WidgetRef ref) {
-    final gamesAsync = ref.watch(mostRatedProvider);
+SingleChildScrollView mostRated(BuildContext context, WidgetRef ref) {
+  final gamesAsync = ref.watch(mostRatedProvider);
 
-    return gamesAsync.when(
-      data: (games) => SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: games.map((game) {
-            return GameCard(game: game);
-          }).toList(),
-        ),
+  return gamesAsync.when(
+    data: (games) => SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: games.map((game) {
+          return GameCard(game: game);
+        }).toList(),
       ),
-      loading: () => const SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Center(child: CircularProgressIndicator()),
-      ),
-      error: (error, stack) => SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Center(child: Text('Error: $error')),
-      ),
-    );
-  }
+    ),
+    loading: () => const SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Center(child: CircularProgressIndicator()),
+    ),
+    error: (error, stack) => SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Center(child: Text('Error: $error')),
+    ),
+  );
+}
 
-  SingleChildScrollView recentlyAdded(BuildContext context, WidgetRef ref) {
-    final gamesAsync = ref.watch(gamesProvider);
+SingleChildScrollView recentlyAdded(BuildContext context, WidgetRef ref) {
+  final gamesAsync = ref.watch(gamesProvider);
 
-    return gamesAsync.when(
-      data: (games) => SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: games.map((game) {
-            return GameCard(game: game);
-          }).toList(),
-        ),
+  return gamesAsync.when(
+    data: (games) => SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: games.map((game) {
+          return GameCard(game: game);
+        }).toList(),
       ),
-      loading: () => const SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Center(child: CircularProgressIndicator()),
-      ),
-      error: (error, stack) => SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Center(child: Text('Error: $error')),
-      ),
-    );
-  }
+    ),
+    loading: () => const SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Center(child: CircularProgressIndicator()),
+    ),
+    error: (error, stack) => SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Center(child: Text('Error: $error')),
+    ),
+  );
 }

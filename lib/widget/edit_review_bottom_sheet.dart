@@ -2,23 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:proyecto_tp3/core/components/dialogs/delete_review_dialog.dart';
 import 'package:proyecto_tp3/provider/review_provider.dart';
 
-class ReviewBottomSheet extends ConsumerStatefulWidget {
+class EditReviewBottomSheet extends ConsumerStatefulWidget {
   final void Function(double rating, String review)? onSubmit;
 
-  const ReviewBottomSheet({super.key, required this.gameId, this.onSubmit});
+  const EditReviewBottomSheet({
+    super.key,
+    required this.gameId,
+    required this.reviewId,
+    required this.rating,
+    required this.content,
+    this.onSubmit,
+  });
 
   final gameId;
+  final reviewId;
+  final rating;
+  final content;
 
   @override
-  ConsumerState<ReviewBottomSheet> createState() => _ReviewBottomSheetState();
+  ConsumerState<EditReviewBottomSheet> createState() =>
+      _ReviewBottomSheetState();
 }
 
-class _ReviewBottomSheetState extends ConsumerState<ReviewBottomSheet> {
-  double rating = 0.0;
-  final TextEditingController _controller = TextEditingController();
+class _ReviewBottomSheetState extends ConsumerState<EditReviewBottomSheet> {
+  late double rating = widget.rating;
+  TextEditingController controller = TextEditingController();
   final int maxChars = 200;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController(text: widget.content);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +61,7 @@ class _ReviewBottomSheetState extends ConsumerState<ReviewBottomSheet> {
           SizedBox(height: 10),
           const Center(
             child: Text(
-              'Escribe tu reseña',
+              'Edita tu reseña',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -64,6 +82,8 @@ class _ReviewBottomSheetState extends ConsumerState<ReviewBottomSheet> {
           _buildTextField(),
           const SizedBox(height: 20),
           _buildSubmitButton(context),
+          const SizedBox(height: 20),
+          _deleteReviewButton(context),
         ],
       ),
     );
@@ -109,7 +129,7 @@ class _ReviewBottomSheetState extends ConsumerState<ReviewBottomSheet> {
       alignment: Alignment.bottomRight,
       children: [
         TextField(
-          controller: _controller,
+          controller: controller,
           maxLength: maxChars,
           maxLines: 4,
           style: const TextStyle(color: Colors.white),
@@ -131,7 +151,7 @@ class _ReviewBottomSheetState extends ConsumerState<ReviewBottomSheet> {
           bottom: 8,
           right: 12,
           child: Text(
-            '${_controller.text.length}/$maxChars',
+            '${controller.text.length}/$maxChars',
             style: const TextStyle(color: Colors.white54, fontSize: 12),
           ),
         ),
@@ -153,18 +173,33 @@ class _ReviewBottomSheetState extends ConsumerState<ReviewBottomSheet> {
         onPressed: () async {
           await ref
               .read(reviewsProvider(widget.gameId).notifier)
-              .addReview(rating, _controller.text.trim());
+              .editReview(widget.reviewId, rating, controller.text.trim());
           Navigator.pop(context);
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              backgroundColor: Colors.green,
-              content: Text('Reseña agregada'),
-            ),
-          );
         },
         child: const Text(
-          'Compartir',
+          'Modificar',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
+  Widget _deleteReviewButton(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color.fromARGB(255, 176, 49, 40),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 14),
+        ),
+        onPressed: () async {
+          DeleteReviewDialog.show(context, widget.reviewId, widget.gameId);
+        },
+        child: const Text(
+          'Eliminar Reseña', //
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
