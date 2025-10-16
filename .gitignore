@@ -47,5 +47,3 @@ app.*.map.json
 # Environment variables
 .env
 
-# Google services configuration
-android/app/google-services.json
