@@ -6,6 +6,7 @@ import 'package:proyecto_tp3/presentation/screens/login_screen.dart';
 import 'package:proyecto_tp3/presentation/screens/profile_screen.dart';
 import 'package:proyecto_tp3/presentation/screens/register_screen.dart';
 import 'package:proyecto_tp3/presentation/screens/search_screen.dart';
+import 'package:proyecto_tp3/presentation/screens/edit_profile_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/login',
@@ -36,6 +37,11 @@ final GoRouter appRouter = GoRouter(
       path: '/add_game',
       pageBuilder: (context, state) =>
           const NoTransitionPage(child: AgregarJuegoPage()),
+    ),
+    GoRoute(
+      path: '/edit_profile',
+      pageBuilder: (context, state) => 
+          const NoTransitionPage(child: EditProfileScreen()),
     ),
   ],
 );
