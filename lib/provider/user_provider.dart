@@ -3,9 +3,10 @@ import 'package:proyecto_tp3/repository/user_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+
 final usernameProvider = FutureProvider<String?>((ref) async {
-  final userService = ref.watch(userServiceProvider);
-  return await userService.getUsername();
+  final repo = UserRepository();
+  return await repo.getCurrentUsername();
 });
 
 final userServiceProvider = Provider<UserService>((ref) {
