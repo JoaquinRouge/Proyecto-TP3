@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:proyecto_tp3/core/components/app_bar.dart';
 import 'package:proyecto_tp3/core/components/bottom_bar.dart';
 import 'package:proyecto_tp3/provider/games_provider.dart';
-import 'package:proyecto_tp3/provider/username_provider.dart';
+import 'package:proyecto_tp3/provider/user_provider.dart';
 import 'package:proyecto_tp3/widget/game_card.dart';
 
 class HomeScreen extends ConsumerWidget {

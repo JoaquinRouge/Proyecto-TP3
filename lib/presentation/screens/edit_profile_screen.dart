@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:proyecto_tp3/core/components/app_bar.dart';
 import 'package:proyecto_tp3/core/components/bottom_bar.dart';
-import 'package:proyecto_tp3/provider/username_provider.dart';
+import 'package:proyecto_tp3/provider/user_provider.dart';
 
 final usernameControllerProvider = Provider.autoDispose<TextEditingController>((ref) {
       return TextEditingController();
@@ -34,15 +34,6 @@ class EditProfileScreen extends ConsumerWidget {
       );
     }
 
-    Future<void> _updateUsername(String newUsername) async {
-      final uid = FirebaseAuth.instance.currentUser?.uid;
-      if (uid == null) return;
-
-      await FirebaseFirestore.instance
-          .collection('usuarios')
-          .doc(uid)
-          .update({'username': newUsername});
-    }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -115,8 +106,12 @@ class EditProfileScreen extends ConsumerWidget {
                 final newUsername = usernameController.text.trim();
                 if (newUsername.isEmpty) return;
 
-                await _updateUsername(newUsername);
+                final userService = ref.read(userServiceProvider);
+                await userService.updateUsername(newUsername);
+
+                // Refrescamos el provider que muestra el username actual
                 ref.invalidate(usernameProvider);
+
                 context.go('/profile');
               },
               child: const Text(

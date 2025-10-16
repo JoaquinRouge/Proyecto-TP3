@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyecto_tp3/core/domain/review.dart';
-import 'package:proyecto_tp3/provider/username_provider.dart';
+import 'package:proyecto_tp3/provider/user_provider.dart';
 import 'package:proyecto_tp3/repository/review_repository.dart';
 
 class ReviewsNotifier extends StateNotifier<AsyncValue<List<Review>>> {
