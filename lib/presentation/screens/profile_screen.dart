@@ -84,7 +84,9 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 60),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.go('/edit_profile');
+                  },
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all(Colors.blueGrey),
                     minimumSize: WidgetStateProperty.all(Size(250, 50)),
