@@ -7,39 +7,46 @@ import 'package:proyecto_tp3/core/components/app_bar.dart';
 import 'package:proyecto_tp3/core/components/bottom_bar.dart';
 import 'package:proyecto_tp3/provider/user_provider.dart';
 
+// Providers para los TextEditingController
 final usernameControllerProvider = Provider.autoDispose<TextEditingController>((ref) {
-      return TextEditingController();
-    });
+  return TextEditingController();
+});
+
+final emailControllerProvider = Provider.autoDispose<TextEditingController>((ref) {
+  final controller = TextEditingController();
+  // Inicializamos con el email actual
+  controller.text = FirebaseAuth.instance.currentUser?.email ?? '';
+  return controller;
+});
 
 class EditProfileScreen extends ConsumerWidget {
   const EditProfileScreen({super.key});
 
   Widget customTextField({
-  required TextEditingController controller,
-  required String hint,
+    required TextEditingController controller,
+    required String hint,
   }) {
-      return TextField(
-        controller: controller,
-        style: const TextStyle(color: Colors.white),
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: const TextStyle(color: Colors.grey),
-          filled: true,
-          fillColor: Colors.grey[900],
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide.none,
-          ),
+    return TextField(
+      controller: controller,
+      style: const TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: const TextStyle(color: Colors.grey),
+        filled: true,
+        fillColor: Colors.grey[900],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide.none,
         ),
-      );
-    }
-
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final email = FirebaseAuth.instance.currentUser?.email ?? 'Email no encontrado';
     final usernameAsync = ref.watch(usernameProvider);
     final usernameController = ref.watch(usernameControllerProvider);
+    final emailController = ref.watch(emailControllerProvider);
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -56,8 +63,8 @@ class EditProfileScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 10),
             customTextField(
-              controller: TextEditingController(text: email),
-              hint: email,
+              controller: emailController,
+              hint: 'Ingrese su email',
             ),
             const SizedBox(height: 20),
 
@@ -104,10 +111,12 @@ class EditProfileScreen extends ConsumerWidget {
               ),
               onPressed: () async {
                 final newUsername = usernameController.text.trim();
-                if (newUsername.isEmpty) return;
+                final newEmail = emailController.text.trim();
+                if (newUsername.isEmpty || newEmail.isEmpty) return;
 
                 final userService = ref.read(userServiceProvider);
                 await userService.updateUsername(newUsername);
+                //await userService.updateEmail(newEmail);
 
                 // Refrescamos el provider que muestra el username actual
                 ref.invalidate(usernameProvider);

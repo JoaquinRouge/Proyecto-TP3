@@ -26,6 +26,13 @@ class UserService {
     });
   }
 
+  Future<void> updateEmail(String newEmail) async {
+    User? user = _auth.currentUser;
+    if (user == null) throw Exception('Usuario no logueado');
+
+    await user.verifyBeforeUpdateEmail(newEmail);
+  }
+
   Future<String> getUsername() async {
     final uid = _auth.currentUser?.uid;
     if (uid == null) throw Exception('Usuario no logueado');
