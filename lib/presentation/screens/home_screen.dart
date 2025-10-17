@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:proyecto_tp3/core/components/app_bar.dart';
 import 'package:proyecto_tp3/core/components/bottom_bar.dart';
 import 'package:proyecto_tp3/provider/games_provider.dart';
@@ -60,15 +59,6 @@ class HomeScreen extends ConsumerWidget {
         ),
       ),
       bottomNavigationBar: const CustomBottomBar(),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-        onPressed: () {
-          GoRouter.of(context).go('/add_game');
-        },
-        child: const Icon(Icons.add),
-      ),
     );
   }
 }
