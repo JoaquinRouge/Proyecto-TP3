@@ -23,7 +23,7 @@ class HomeScreen extends ConsumerWidget {
             children: [
               usernameAsync.when(
                 data: (username) => Text(
-                  'Bienvenido de nuevo, ${username ?? "Usuario"}',
+                  '¡Bienvenido de nuevo, ${username ?? "Usuario"}!',
                   style: const TextStyle(color: Colors.white),
                 ),
                 loading: () => const Center(child: CircularProgressIndicator()),

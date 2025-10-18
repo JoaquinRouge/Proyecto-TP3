@@ -28,6 +28,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             padding: const EdgeInsets.all(16),
             child: TextField(
               controller: _controller,
+              style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 hintText: 'Search for games...',
                 prefixIcon: Icon(Icons.search),
