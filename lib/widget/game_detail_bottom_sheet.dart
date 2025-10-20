@@ -18,8 +18,6 @@ class GameDetailBottomSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final gameAsync = ref.watch(singleGameProvider(gameId));
-    final library = ref.watch(libraryProvider);
-    final libraryNotifier = ref.read(libraryProvider.notifier);
 
     return gameAsync.when(
       data: (games) {
@@ -28,7 +26,6 @@ class GameDetailBottomSheet extends ConsumerWidget {
         }
 
         final game = games[0];
-        final isInLibrary = library.any((g) => g.id == game.id);
         final reviewsAsync = ref.watch(reviewsProvider(game.id));
 
         return DraggableScrollableSheet(
@@ -74,13 +71,7 @@ class GameDetailBottomSheet extends ConsumerWidget {
                         ],
                       ),
                       Divider(color: Colors.grey[300], thickness: 0.2),
-                      gameInfo(ref, game, isInLibrary, context, () {
-                        if (isInLibrary) {
-                          libraryNotifier.removeGameFromLibrary(game.id);
-                        } else {
-                          libraryNotifier.addGameToLibrary(game);
-                        }
-                      }),
+                      gameInfo(ref, game, context),
                       reviewsAsync.when(
                         data: (reviews) =>
                             gameReviews(context, game, reviews, ref),
@@ -98,6 +89,179 @@ class GameDetailBottomSheet extends ConsumerWidget {
       },
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, st) => Center(child: Text('Error: $e')),
+    );
+  }
+
+  Padding gameInfo(
+    WidgetRef ref,
+    Game game,
+    BuildContext context,
+  ) {
+
+    final library = ref.watch(libraryServiceProvider);
+    final isInLibrary = library.isGameInLibrary(game.id);
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        children: [
+          gameImage(game),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  game.name,
+                  maxLines: 2,
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, animation) =>
+                    ScaleTransition(scale: animation, child: child),
+                child: FutureBuilder<bool>(
+                  future: isInLibrary,
+                  builder: (context, snapshot) {
+                    final inLibrary = snapshot.data ?? false;
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SizedBox(
+                        width: 36,
+                        height: 36,
+                        child: Center(
+                          child: SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        ),
+                      );
+                    }
+
+                    return GestureDetector(
+                      key: ValueKey(inLibrary),
+                      onTap: () {
+                        if (inLibrary) {
+                          library.removeGame(game.id);
+                        } else {
+                          library.addGame(game.id);
+                        }
+                        ref.invalidate(libraryServiceProvider);
+
+                        ScaffoldMessenger.of(context).clearSnackBars();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              inLibrary
+                                  ? 'Juego removido de la biblioteca'
+                                  : 'Juego añadido a la biblioteca',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor:
+                                inLibrary ? Colors.red : Colors.green,
+                            behavior: SnackBarBehavior.floating,
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      },
+                      child: HeroIcon(
+                        inLibrary ? HeroIcons.minusCircle : HeroIcons.plusCircle,
+                        color: Colors.white,
+                        size: 36,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(children: buildStars(game.rating)),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              const HeroIcon(HeroIcons.tag, color: Colors.white),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  game.genres.join(", "),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 15),
+          Row(
+            children: [
+              const HeroIcon(HeroIcons.tv, color: Colors.white),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  game.platforms.join(", "),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 15),
+          Row(
+            children: [
+              const HeroIcon(HeroIcons.calendar, color: Colors.white),
+              const SizedBox(width: 10),
+              Text(
+                game.releaseDate.replaceAll("-", "/"),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 15),
+          Row(
+            children: [
+              const HeroIcon(HeroIcons.buildingLibrary, color: Colors.white),
+              const SizedBox(width: 10),
+              Text(
+                game.developer,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -212,152 +376,6 @@ class GameDetailBottomSheet extends ConsumerWidget {
               reviewerUsername: entry.value.reviewerUsername,
             );
           }),
-        ],
-      ),
-    );
-  }
-
-  Padding gameInfo(
-    WidgetRef ref,
-    Game game,
-    bool isInLibrary,
-    BuildContext context,
-    void Function() onToggleLibrary,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        children: [
-          gameImage(game),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  game.name,
-                  maxLines: 2,
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                transitionBuilder: (child, animation) =>
-                    ScaleTransition(scale: animation, child: child),
-                child: GestureDetector(
-                  key: ValueKey(isInLibrary),
-                  onTap: () {
-                    onToggleLibrary();
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          isInLibrary
-                              ? 'Juego removido de la biblioteca'
-                              : 'Juego añadido a la biblioteca',
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                        backgroundColor: isInLibrary
-                            ? Colors.red
-                            : Colors.green,
-                        behavior: SnackBarBehavior.floating,
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
-                  },
-                  child: HeroIcon(
-                    isInLibrary ? HeroIcons.minusCircle : HeroIcons.plusCircle,
-                    color: Colors.white,
-                    size: 36,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(children: buildStars(game.rating)),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              const HeroIcon(HeroIcons.tag, color: Colors.white),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  game.genres.join(", "),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 15),
-          Row(
-            children: [
-              const HeroIcon(HeroIcons.tv, color: Colors.white),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  game.platforms.join(", "),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 15),
-          Row(
-            children: [
-              const HeroIcon(HeroIcons.calendar, color: Colors.white),
-              const SizedBox(width: 10),
-              Text(
-                game.releaseDate.replaceAll("-", "/"),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 15),
-          Row(
-            children: [
-              const HeroIcon(HeroIcons.buildingLibrary, color: Colors.white),
-              const SizedBox(width: 10),
-              Text(
-                game.developer,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );
