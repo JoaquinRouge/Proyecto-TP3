@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyecto_tp3/core/components/app_bar.dart';
 import 'package:proyecto_tp3/core/components/bottom_bar.dart';
 import 'package:proyecto_tp3/provider/games_provider.dart';
-import 'package:proyecto_tp3/provider/library_provider.dart';
+import 'package:proyecto_tp3/provider/user_provider.dart';
 import 'package:proyecto_tp3/widget/game_card.dart';
 
 class LibraryScreen extends ConsumerWidget {
@@ -11,7 +11,7 @@ class LibraryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final library = ref.watch(libraryServiceProvider).library();
+    final library = ref.watch(userServiceProvider).getLibrary();
 
     return Scaffold(
       appBar: const CustomAppBar(title: "Mis Juegos"),

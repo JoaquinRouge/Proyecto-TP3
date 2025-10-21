@@ -4,8 +4,8 @@ import 'package:heroicons/heroicons.dart';
 import 'package:proyecto_tp3/core/domain/game.dart';
 import 'package:proyecto_tp3/core/domain/review.dart';
 import 'package:proyecto_tp3/provider/games_provider.dart';
-import 'package:proyecto_tp3/provider/library_provider.dart';
 import 'package:proyecto_tp3/provider/review_provider.dart';
+import 'package:proyecto_tp3/provider/user_provider.dart';
 import 'package:proyecto_tp3/widget/add_review_bottom_sheet.dart';
 import 'package:proyecto_tp3/widget/edit_review_bottom_sheet.dart';
 import 'package:proyecto_tp3/widget/review_card.dart';
@@ -98,7 +98,7 @@ class GameDetailBottomSheet extends ConsumerWidget {
     BuildContext context,
   ) {
 
-    final library = ref.watch(libraryServiceProvider);
+    final library = ref.watch(userServiceProvider);
     final isInLibrary = library.isGameInLibrary(game.id);
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -149,11 +149,11 @@ class GameDetailBottomSheet extends ConsumerWidget {
                       key: ValueKey(inLibrary),
                       onTap: () {
                         if (inLibrary) {
-                          library.removeGame(game.id);
+                          library.removeGameFromLibrary(game.id);
                         } else {
-                          library.addGame(game.id);
+                          library.addGameToLibrary(game.id);
                         }
-                        ref.invalidate(libraryServiceProvider);
+                        ref.invalidate(userServiceProvider);
 
                         ScaffoldMessenger.of(context).clearSnackBars();
                         ScaffoldMessenger.of(context).showSnackBar(
