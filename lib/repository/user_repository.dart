@@ -28,7 +28,7 @@ class UserRepository {
 
     await db.doc(userId).set({
       'library': FieldValue.arrayRemove([gameId]),
-    });
+    }, SetOptions(merge: true));
   }
 
   Future<List<int>?> getLibrary() async {
