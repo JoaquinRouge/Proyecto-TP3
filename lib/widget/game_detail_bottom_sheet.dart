@@ -299,19 +299,12 @@ class GameDetailBottomSheet extends ConsumerWidget {
                             context: context,
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
-                            builder: (_) => Padding(
-                              padding: EdgeInsets.only(
-                                bottom: MediaQuery.of(
-                                  context,
-                                ).viewInsets.bottom,
-                              ),
-                              child: EditReviewBottomSheet(
+                            builder: (_) => EditReviewBottomSheet(
                                 gameId: game.id,
                                 reviewId: review.id,
                                 rating: review.rating,
                                 content: review.content,
                               ),
-                            ),
                           );
                         },
                         style: ElevatedButton.styleFrom(

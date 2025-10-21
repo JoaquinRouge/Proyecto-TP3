@@ -7,7 +7,7 @@ class ReviewCard extends ConsumerWidget {
   final Review review;
   final int index;
   final int gameId;
-  final String reviewerUsername; // Placeholder username
+  final String reviewerUsername;
 
   const ReviewCard({
     super.key,

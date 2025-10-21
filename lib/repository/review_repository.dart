@@ -15,6 +15,17 @@ class ReviewRepository {
         .toList();
   }
 
+  Future<List<Review>> getReviewsByUser(String reviewerUsername) async {
+    final snapshot = await db
+        .collection('reviews')
+        .where('reviewerUsername', isEqualTo: reviewerUsername)
+        .get();
+
+    return snapshot.docs
+        .map((doc) => Review.fromFirestore(doc.id, doc.data()))
+        .toList();
+  }
+
   Future<Review?> getPersonalReview(int gameId, String reviewerUsername) async {
     final snapshot = await db
         .collection("reviews")

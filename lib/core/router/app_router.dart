@@ -7,6 +7,7 @@ import 'package:proyecto_tp3/presentation/screens/register_screen.dart';
 import 'package:proyecto_tp3/presentation/screens/search_screen.dart';
 import 'package:proyecto_tp3/presentation/screens/edit_profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:proyecto_tp3/presentation/screens/user_reviews.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>();
@@ -42,8 +43,13 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: '/edit_profile',
-      pageBuilder: (context, state) => 
+      pageBuilder: (context, state) =>
           const NoTransitionPage(child: EditProfileScreen()),
+    ),
+    GoRoute(
+      path: '/user_reviews',
+      pageBuilder: (context, state) =>
+          const NoTransitionPage(child: UserReviews()),
     ),
   ],
   redirect: (context, state) {

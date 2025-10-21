@@ -25,6 +25,15 @@ class GamesNotifier extends StateNotifier<AsyncValue<List<Game>>> {
     }
   }
 
+  Future<String> searchGameNameById(int id)async{
+    try {
+      final gameName = await repository.fetchGameNameById(id);
+      return gameName;
+    } catch (e) {
+      throw Exception('Error al obtener el nombre del juego: $e');
+    }
+  }
+
   Future<void> loadStrategy() async {
     try {
       final games = await repository.fetchStrategy();

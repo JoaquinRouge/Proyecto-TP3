@@ -56,8 +56,11 @@ class ProfileScreen extends StatelessWidget {
                                   ? NetworkImage(userPhotoUrl)
                                   : null,
                               child: userPhotoUrl == null
-                                  ? const Icon(Icons.person,
-                                      size: 100, color: Colors.white70)
+                                  ? const Icon(
+                                      Icons.person,
+                                      size: 100,
+                                      color: Colors.white70,
+                                    )
                                   : null,
                             ),
                             Positioned(
@@ -105,11 +108,29 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: 60),
                 ElevatedButton(
                   onPressed: () {
+                    context.push('/user_reviews');
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
+                    minimumSize: MaterialStateProperty.all(const Size(250, 50)),
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  child: const Text(
+                    "Ver Mis Reseñas",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
                     context.go('/edit_profile');
                   },
                   style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Colors.blueGrey),
+                    backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
                     minimumSize: MaterialStateProperty.all(const Size(250, 50)),
                     shape: MaterialStateProperty.all(
                       RoundedRectangleBorder(
