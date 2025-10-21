@@ -40,4 +40,19 @@ class UserService {
     final doc = await _db.collection('usuarios').doc(uid).get();
     return doc['username'] ?? '';
   }
+
+  Future<void> updatePassword(String newPassword) async {
+    User? user = _auth.currentUser;
+    if (user == null) throw Exception('Usuario no logueado');
+
+    try {
+      await user.updatePassword(newPassword);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        throw FirebaseAuthException(code: 'requires-recent-login', message: 'Debes volver a iniciar sesión para cambiar tu contraseña',);
+      } else {
+        rethrow;
+      }
+    }
+  }
 }
