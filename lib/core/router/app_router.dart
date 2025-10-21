@@ -47,10 +47,10 @@ final GoRouter appRouter = GoRouter(
     ),
   ],
   redirect: (context, state) {
+    //handleo de deep links
     final uri = Uri.tryParse(state.uri.toString());
 
     if (uri != null) {
-      // ejemplo: gameshelf://game/5
       if (uri.scheme == 'gameshelf') {
         if (uri.host == 'game' && uri.pathSegments.isNotEmpty) {
           final id = uri.pathSegments.first;
@@ -66,4 +66,3 @@ final GoRouter appRouter = GoRouter(
     return null; // no hacer redirect
   },
 );
-// GoRoute

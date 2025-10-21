@@ -1,1 +1,33 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"gameshelf-tp3","appId":"1:334314456459:android:46cd2b15126e29e0b4db8e","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"gameshelf-tp3","configurations":{"android":"1:334314456459:android:46cd2b15126e29e0b4db8e","ios":"1:334314456459:ios:18370eb448d5ea39b4db8e","macos":"1:334314456459:ios:18370eb448d5ea39b4db8e","web":"1:334314456459:web:136cc3d83d1d8b70b4db8e","windows":"1:334314456459:web:8e55c969c6dcc90bb4db8e"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "gameshelf-tp3",
+          "appId": "1:334314456459:android:46cd2b15126e29e0b4db8e",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "gameshelf-tp3",
+          "configurations": {
+            "android": "1:334314456459:android:46cd2b15126e29e0b4db8e",
+            "ios": "1:334314456459:ios:18370eb448d5ea39b4db8e",
+            "macos": "1:334314456459:ios:18370eb448d5ea39b4db8e",
+            "web": "1:334314456459:web:136cc3d83d1d8b70b4db8e",
+            "windows": "1:334314456459:web:8e55c969c6dcc90bb4db8e"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

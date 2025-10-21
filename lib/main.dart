@@ -3,8 +3,9 @@ import 'package:proyecto_tp3/core/router/app_router.dart';
 import 'package:proyecto_tp3/core/theme/app_theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:firebase_core/firebase_core.dart'; // Añade esta línea
+import 'package:firebase_core/firebase_core.dart';
 import 'package:proyecto_tp3/firebase_options.dart';
+import 'package:proyecto_tp3/core/handlers/deep_link_listener.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -18,13 +19,17 @@ void main() async {
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
+  
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: appRouter,
-      debugShowCheckedModeBanner: false,
-      title: 'Games App',
-      theme: AppTheme(selectedColor: 0, isDarkMode: false).getThemeData(),
+    return DeepLinkListener(
+      child: MaterialApp.router(
+        routerConfig: appRouter,
+        debugShowCheckedModeBanner: false,
+        title: 'Games App',
+        theme: AppTheme(selectedColor: 0, isDarkMode: false).getThemeData(),
+      ),
     );
   }
 }
