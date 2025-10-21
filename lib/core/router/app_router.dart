@@ -6,16 +6,24 @@ import 'package:proyecto_tp3/presentation/screens/profile_screen.dart';
 import 'package:proyecto_tp3/presentation/screens/register_screen.dart';
 import 'package:proyecto_tp3/presentation/screens/search_screen.dart';
 import 'package:proyecto_tp3/presentation/screens/edit_profile_screen.dart';
+import 'package:flutter/material.dart';
+
+final GlobalKey<NavigatorState> _rootNavigatorKey =
+    GlobalKey<NavigatorState>();
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/login',
+  navigatorKey: _rootNavigatorKey,
   routes: [
     GoRoute(path: '/login', builder: (context, state) => LoginScreen()),
     GoRoute(path: '/register', builder: (context, state) => RegisterScreen()),
     GoRoute(
       path: '/home',
-      pageBuilder: (context, state) =>
-          const NoTransitionPage(child: HomeScreen()),
+      pageBuilder: (context, state) {
+        // obtengo el id si viene, sino null
+      final id = state.uri.queryParameters['id']; 
+      return NoTransitionPage(child: HomeScreen(id: id));
+      }
     ),
     GoRoute(
       path: '/library',
@@ -38,5 +46,24 @@ final GoRouter appRouter = GoRouter(
           const NoTransitionPage(child: EditProfileScreen()),
     ),
   ],
+  redirect: (context, state) {
+    final uri = Uri.tryParse(state.uri.toString());
+
+    if (uri != null) {
+      // ejemplo: gameshelf://game/5
+      if (uri.scheme == 'gameshelf') {
+        if (uri.host == 'game' && uri.pathSegments.isNotEmpty) {
+          final id = uri.pathSegments.first;
+          return '/home?id=$id';
+        } else if (uri.host == 'profile') {
+          return '/profile';
+        } else {
+          return '/';
+        }
+      }
+    }
+
+    return null; // no hacer redirect
+  },
 );
 // GoRoute

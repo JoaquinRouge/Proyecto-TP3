@@ -5,12 +5,37 @@ import 'package:proyecto_tp3/core/components/bottom_bar.dart';
 import 'package:proyecto_tp3/provider/games_provider.dart';
 import 'package:proyecto_tp3/provider/user_provider.dart';
 import 'package:proyecto_tp3/widget/game_card.dart';
+import 'package:proyecto_tp3/widget/game_detail_bottom_sheet.dart';
 
-class HomeScreen extends ConsumerWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends ConsumerStatefulWidget {
+  final String? id;
+  const HomeScreen({super.key, this.id});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.id != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (context) => GameDetailBottomSheet(
+            gameId: int.parse(widget.id!),
+          ),
+        );
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final usernameAsync = ref.watch(usernameProvider);
 
     return Scaffold(
@@ -26,7 +51,8 @@ class HomeScreen extends ConsumerWidget {
                   '¡Bienvenido de nuevo, ${username ?? "Usuario"}!',
                   style: const TextStyle(color: Colors.white),
                 ),
-                loading: () => const Center(child: CircularProgressIndicator()),
+                loading: () =>
+                    const Center(child: CircularProgressIndicator()),
                 error: (error, _) => const Text(
                   'Error al cargar usuario',
                   style: TextStyle(color: Colors.white),
@@ -62,6 +88,7 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 }
+
 
 SingleChildScrollView mostRated(BuildContext context, WidgetRef ref) {
   final gamesAsync = ref.watch(mostRatedProvider);
