@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_tp3/presentation/screens/home_screen.dart';
 import 'package:proyecto_tp3/presentation/screens/library_screen.dart';
@@ -11,6 +12,8 @@ import 'package:proyecto_tp3/presentation/screens/user_reviews.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>();
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/login',
@@ -53,12 +56,20 @@ final GoRouter appRouter = GoRouter(
     ),
   ],
   redirect: (context, state) {
+
+    if(_auth.currentUser == null) {
+      debugPrint('no user logged in, redirecting to login');
+      return '/login';
+    }
+
     final uri = Uri.tryParse(state.uri.toString());
     debugPrint('🔗 URI parseado: $uri');
     if (uri != null) {
       if (uri.scheme == 'gameshelf' || uri.scheme == 'https') {
         debugPrint('https y gameshelf scheme detected');
         if (uri.path == '/game' || uri.host == 'game') {
+          debugPrint('current user: ${_auth.currentUser}');
+          
           debugPrint('path: ${uri.path}');
           final id = uri.queryParameters['id'];
           debugPrint('game id detected: $id');
