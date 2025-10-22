@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.proyecto_tp3">
     <application
         android:label="proyecto_tp3"
         android:name="${applicationName}"
@@ -29,14 +29,15 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="gameshelf" android:host="home" />
+                <data android:scheme="gameshelf" android:host="game" />
             </intent-filter>
 
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="gameshelf-tp3.web.app" />
+                <data android:scheme="https" android:host="gameshelf-tp3.web.app" android:pathPrefix="/game" />
+                <data android:scheme="https" android:host="gameshelf-tp3.web.app" android:pathPrefix="/profile" />
             </intent-filter>
 
         </activity>

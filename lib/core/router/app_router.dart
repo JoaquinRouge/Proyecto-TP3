@@ -53,22 +53,23 @@ final GoRouter appRouter = GoRouter(
     ),
   ],
   redirect: (context, state) {
-    //handleo de deep links
     final uri = Uri.tryParse(state.uri.toString());
-
+    debugPrint('🔗 URI parseado: $uri');
     if (uri != null) {
-      if (uri.scheme == 'gameshelf') {
-        if (uri.host == 'game' && uri.pathSegments.isNotEmpty) {
-          final id = uri.pathSegments.first;
-          return '/home?id=$id';
-        } else if (uri.host == 'profile') {
-          return '/profile';
-        } else {
-          return '/';
-        }
+      if (uri.scheme == 'gameshelf' || uri.scheme == 'https') {
+        debugPrint('https y gameshelf scheme detected');
+        if (uri.path == '/game' || uri.host == 'game') {
+          debugPrint('path: ${uri.path}');
+          final id = uri.queryParameters['id'];
+          debugPrint('game id detected: $id');
+          if (id != null) return '/home?id=$id';
+      } else if (uri.path == '/profile') {
+        return '/profile';
+      } else {
+        return '/';
       }
     }
-
-    return null; // no hacer redirect
-  },
+  }
+  return null;
+},
 );

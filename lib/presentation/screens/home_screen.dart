@@ -19,15 +19,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    _showGame(widget.id);
+  }
 
-    if (widget.id != null) {
+  @override
+  void didUpdateWidget(covariant HomeScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.id != widget.id) {
+      _showGame(widget.id);
+    }
+  }
+
+  void _showGame(String? id) {
+    if (id != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
           builder: (context) => GameDetailBottomSheet(
-            gameId: int.parse(widget.id!),
+            gameId: int.parse(id),
           ),
         );
       });
