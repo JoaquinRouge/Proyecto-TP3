@@ -24,12 +24,6 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                ElevatedButton(child: Text("Deeplink test"), onPressed: () {
-                context.go('gameshelf://game/250');
-              },),
-              ElevatedButton(child: Text("App link test"), onPressed: () {
-                // a
-              },),
                 FutureBuilder<DocumentSnapshot>(
                   future: db.collection('usuarios').doc(uid).get(),
                   builder: (context, snapshot) {

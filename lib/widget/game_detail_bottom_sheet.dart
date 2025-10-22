@@ -9,6 +9,7 @@ import 'package:proyecto_tp3/provider/user_provider.dart';
 import 'package:proyecto_tp3/widget/add_review_bottom_sheet.dart';
 import 'package:proyecto_tp3/widget/edit_review_bottom_sheet.dart';
 import 'package:proyecto_tp3/widget/review_card.dart';
+import 'package:share_plus/share_plus.dart';
 
 class GameDetailBottomSheet extends ConsumerWidget {
   const GameDetailBottomSheet({super.key, required this.gameId});
@@ -122,6 +123,16 @@ class GameDetailBottomSheet extends ConsumerWidget {
                   ),
                 ),
               ),
+              IconButton(
+                  icon: const HeroIcon(HeroIcons.share),
+                  color: Colors.white,
+                  onPressed: () {
+                    final url = 'https://gameshelf-tp3.web.app/game?id=${game.id}';
+                    SharePlus.instance.share(ShareParams(
+                      text: '¡Mira este juego en GameShelf! $url',
+                    ));
+                  },
+                ),
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
                 transitionBuilder: (child, animation) =>
