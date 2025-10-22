@@ -19,7 +19,6 @@ class ReviewsNotifier extends StateNotifier<AsyncValue<List<Review>>> {
 
       final username = await Future.value(ref.read(usernameProvider).value);
 
-      if (username != null) {
         final userReviewIndex = reviews.indexWhere(
           (r) => r.reviewerUsername == username,
         );
@@ -27,7 +26,6 @@ class ReviewsNotifier extends StateNotifier<AsyncValue<List<Review>>> {
         if (userReviewIndex != -1) {
           final userReview = reviews.removeAt(userReviewIndex);
           reviews.insert(0, userReview);
-        }
       }
 
       state = AsyncValue.data(reviews);

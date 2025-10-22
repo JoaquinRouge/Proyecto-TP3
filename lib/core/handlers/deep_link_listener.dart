@@ -36,7 +36,7 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
   void _listenToLinks() {
     _linkSubscription = _appLinks.uriLinkStream.listen(
       (uri) {
-        if (uri != null) _handleIncomingLink(uri);
+        _handleIncomingLink(uri);
       },
       onError: (err) {
         debugPrint('Error al recibir link: $err');
