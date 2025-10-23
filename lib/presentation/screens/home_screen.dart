@@ -50,7 +50,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final usernameAsync = ref.watch(usernameProvider);
 
     return Scaffold(
-      appBar: const CustomAppBar(title: "Home"),
+      appBar: const CustomAppBar(title: "Inicio"),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
