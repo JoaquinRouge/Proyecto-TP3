@@ -30,7 +30,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               controller: _controller,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                hintText: 'Search for games...',
+                hintText: 'Buscar un juego...',
                 prefixIcon: Icon(Icons.search),
               ),
               onChanged: (value) {
