@@ -16,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
     final db = FirebaseFirestore.instance;
 
     return Scaffold(
-      appBar: const CustomAppBar(title: "Profile"),
+      appBar: const CustomAppBar(title: "Perfil"),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

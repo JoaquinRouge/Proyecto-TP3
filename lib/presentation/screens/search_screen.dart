@@ -21,7 +21,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final gamesAsync = ref.watch(searchGamesProvider(_query));
 
     return Scaffold(
-      appBar: CustomAppBar(title: "Search Games"),
+      appBar: CustomAppBar(title: "Buscar Juegos"),
       body: Column(
         children: [
           Padding(
