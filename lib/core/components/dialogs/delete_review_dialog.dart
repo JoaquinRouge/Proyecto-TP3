@@ -54,6 +54,7 @@ class DeleteReviewDialog extends ConsumerWidget {
                       backgroundColor: Colors.green,
                       content: Text('Reseña eliminada')),
                   );
+                  ref.invalidate(userReviewsProvider);
                 },
                 child: const Text("Confirmar", style: TextStyle(fontSize: 15)),
               ),

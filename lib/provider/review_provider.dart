@@ -108,7 +108,7 @@ final personalReviewProvider = FutureProvider.family<Review?, int>((
       .getPersonalReview(gameId, username);
 });
 
-final userReviewsProvider = FutureProvider.family<List<Review>, String>((ref, reviewerUsername) async {
+final userReviewsProvider = FutureProvider.autoDispose.family<List<Review>, String>((ref, reviewerUsername) async {
   final repo = ref.watch(reviewRepositoryProvider);
   return await repo.getReviewsByUser(reviewerUsername);
 });

@@ -38,134 +38,122 @@ class _ReviewBottomSheetState extends ConsumerState<EditReviewBottomSheet> {
     controller = TextEditingController(text: widget.content);
   }
 
- // Archivo: EditReviewBottomSheet.dart
+  @override
+  Widget build(BuildContext context) {
+    //Obtener la altura del teclado
+    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
-@override
-Widget build(BuildContext context) {
-  // 1. Obtener la altura del teclado
-  final bottomInset = MediaQuery.of(context).viewInsets.bottom;
-  
-  // Definimos el padding base
-  const double basePadding = 20.0;
+    // Definimos el padding base
+    const double basePadding = 20.0;
 
-  return LayoutBuilder(
-    builder: (context, constraints) {
-      return Container(
-        // 2. Mantenemos el padding lateral y superior, y sumamos el basePadding
-        //    al bottomInset para asegurar el espacio.
-        padding: EdgeInsets.fromLTRB(
-          basePadding,
-          basePadding,
-          basePadding,
-          basePadding + bottomInset, // ⬅️ SUMAMOS el padding base + el del teclado
-        ),
-        
-        decoration: const BoxDecoration(
-          color: Color(0xFF1E2128),
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        
-        child: SingleChildScrollView(
-          child: Column(
-            // Nota: Aquí quitamos el padding del Container.
-            // Los hijos del Column están ahora con el padding correcto.
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // ... Tu contenido completo sigue aquí.
-              // Solo el Column y sus hijos deben estar dentro del SingleChildScrollView.
-              Center(
-                child: GestureDetector(
-                  onTap: () {
-                    context.pop();
-                  },
-                  child: HeroIcon(HeroIcons.chevronDown, color: Colors.white),
-                ),
-              ),
-              const SizedBox(height: 10),
-              const Center(
-                child: Text(
-                  'Edita tu reseña',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Container(
+          padding: EdgeInsets.fromLTRB(
+            basePadding,
+            basePadding,
+            basePadding,
+            basePadding + bottomInset,
+          ),
+
+          decoration: const BoxDecoration(
+            color: Color(0xFF1E2128),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      context.pop();
+                    },
+                    child: HeroIcon(HeroIcons.chevronDown, color: Colors.white),
                   ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              const Center(
-                child: Text(
-                  'Comparte tu experiencia con el juego.',
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                const SizedBox(height: 10),
+                const Center(
+                  child: Text(
+                    'Edita tu reseña',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              _buildStarRating(),
-              const SizedBox(height: 16),
-              _buildTextField(),
-              const SizedBox(height: 20),
-              _buildSubmitButton(context),
-              const SizedBox(height: 20),
-              _deleteReviewButton(context),
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}
-
-  Widget _buildStarRating() {
-  return Center(
-    child: Wrap(
-      alignment: WrapAlignment.center,
-      spacing: 4,
-      children: List.generate(5, (index) {
-        final starValue = index + 1.0;
-        final isHalf = (rating - index) == 0.5;
-        
-        // Determina el ícono a mostrar (estrella completa, media o borde)
-        IconData iconData = Icons.star_border;
-        if (rating >= starValue) {
-          iconData = Icons.star;
-        } else if (isHalf) {
-          iconData = Icons.star_half;
-        }
-
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              // 1. Si el usuario toca la estrella ya seleccionada:
-              //    - Si es una estrella completa, la reduce a media.
-              //    - Si es media estrella, la desactiva (se vuelve a index).
-              if (rating == starValue) {
-                rating = starValue - 0.5;
-              } else if (rating == starValue - 0.5) {
-                rating = index.toDouble(); // Desactiva la estrella
-              } 
-              // 2. Si toca una estrella no seleccionada, la selecciona completa.
-              else {
-                rating = starValue;
-              }
-            });
-          },
-          onLongPress: () {
-            // Un toque largo puede forzar media estrella
-            setState(() {
-              rating = starValue - 0.5;
-            });
-          },
-          child: Icon(
-            iconData,
-            color: Colors.amber,
-            size: 36,
+                const SizedBox(height: 4),
+                const Center(
+                  child: Text(
+                    'Comparte tu experiencia con el juego.',
+                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                _buildStarRating(),
+                const SizedBox(height: 16),
+                _buildTextField(),
+                const SizedBox(height: 20),
+                _buildSubmitButton(context),
+                const SizedBox(height: 20),
+                _deleteReviewButton(context),
+              ],
+            ),
           ),
         );
-      }),
-    ),
-  );
-}
+      },
+    );
+  }
+
+  Widget _buildStarRating() {
+    return Center(
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        spacing: 4,
+        children: List.generate(5, (index) {
+          final starValue = index + 1.0;
+          final isHalf = (rating - index) == 0.5;
+
+          // Determina el ícono a mostrar (estrella completa, media o borde)
+          IconData iconData = Icons.star_border;
+          if (rating >= starValue) {
+            iconData = Icons.star;
+          } else if (isHalf) {
+            iconData = Icons.star_half;
+          }
+
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                // 1. Si el usuario toca la estrella ya seleccionada:
+                //    - Si es una estrella completa, la reduce a media.
+                //    - Si es media estrella, la desactiva (se vuelve a index).
+                if (rating == starValue) {
+                  rating = starValue - 0.5;
+                } else if (rating == starValue - 0.5) {
+                  rating = index.toDouble(); // Desactiva la estrella
+                }
+                // 2. Si toca una estrella no seleccionada, la selecciona completa.
+                else {
+                  rating = starValue;
+                }
+              });
+            },
+            onLongPress: () {
+              // Un toque largo puede forzar media estrella
+              setState(() {
+                rating = starValue - 0.5;
+              });
+            },
+            child: Icon(iconData, color: Colors.amber, size: 36),
+          );
+        }),
+      ),
+    );
+  }
 
   Widget _buildTextField() {
     return Stack(

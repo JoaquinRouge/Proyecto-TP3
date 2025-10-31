@@ -10,8 +10,7 @@ import 'package:proyecto_tp3/presentation/screens/edit_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:proyecto_tp3/presentation/screens/user_reviews.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey =
-    GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -19,15 +18,18 @@ final GoRouter appRouter = GoRouter(
   initialLocation: '/login',
   navigatorKey: _rootNavigatorKey,
   routes: [
-    GoRoute(path: '/login', builder: (context, state) => LoginScreen()),
-    GoRoute(path: '/register', builder: (context, state) => RegisterScreen()),
+    GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
+    GoRoute(
+      path: '/register',
+      builder: (context, state) => const RegisterScreen(),
+    ),
     GoRoute(
       path: '/home',
       pageBuilder: (context, state) {
         // obtengo el id si viene, sino null
-      final id = state.uri.queryParameters['id']; 
-      return NoTransitionPage(child: HomeScreen(id: id));
-      }
+        final id = state.uri.queryParameters['id'];
+        return NoTransitionPage(child: HomeScreen(id: id));
+      },
     ),
     GoRoute(
       path: '/library',
@@ -55,32 +57,42 @@ final GoRouter appRouter = GoRouter(
           const NoTransitionPage(child: UserReviews()),
     ),
   ],
-  redirect: (context, state) {
 
-    if(_auth.currentUser == null) {
-      debugPrint('no user logged in, redirecting to login');
+  redirect: (context, state) {
+    final isLoggedIn = _auth.currentUser != null;
+    final goingTo = state.uri.toString();
+
+    // Si el usuario NO está logueado, solo permitir login o register
+    if (!isLoggedIn &&
+        !goingTo.startsWith('/login') &&
+        !goingTo.startsWith('/register')) {
+      debugPrint('No user logged in, redirecting to /login');
       return '/login';
     }
 
+    // Si el usuario está logueado y va a login/register, mandarlo al home
+    if (isLoggedIn &&
+        (goingTo.startsWith('/login') || goingTo.startsWith('/register'))) {
+      debugPrint('User already logged in, redirecting to /home');
+      return '/home';
+    }
+
+    // Manejo de deep links o enlaces externos
     final uri = Uri.tryParse(state.uri.toString());
-    debugPrint('🔗 URI parseado: $uri');
     if (uri != null) {
       if (uri.scheme == 'gameshelf' || uri.scheme == 'https') {
-        debugPrint('https y gameshelf scheme detected');
+        debugPrint('🌐 Deep link detected: $uri');
         if (uri.path == '/game' || uri.host == 'game') {
-          debugPrint('current user: ${_auth.currentUser}');
-          
-          debugPrint('path: ${uri.path}');
           final id = uri.queryParameters['id'];
-          debugPrint('game id detected: $id');
           if (id != null) return '/home?id=$id';
-      } else if (uri.path == '/profile') {
-        return '/profile';
-      } else {
-        return '/';
+        } else if (uri.path == '/profile') {
+          return '/profile';
+        } else {
+          return '/';
+        }
       }
     }
-  }
-  return null;
-},
+
+    return null; // sin redirección
+  },
 );
