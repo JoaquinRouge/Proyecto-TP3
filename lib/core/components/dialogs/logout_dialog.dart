@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:proyecto_tp3/services/firebase_auth_service.dart';
 
 class LogoutDialog extends StatelessWidget {
   const LogoutDialog({super.key});
@@ -23,6 +21,7 @@ class LogoutDialog extends StatelessWidget {
       actions: [
         Column(
           children: [
+            // ✅ Botón Confirmar
             SizedBox(
               width: 400,
               height: 50,
@@ -34,14 +33,15 @@ class LogoutDialog extends StatelessWidget {
                   ),
                   foregroundColor: Colors.white,
                 ),
-                onPressed: () async {
-                  FirebaseAuthService().logout();
-                  context.go('/login');
+                onPressed: () {
+                  Navigator.of(context).pop(true); // devuelve "true"
                 },
                 child: const Text("Confirmar", style: TextStyle(fontSize: 15)),
               ),
             ),
             const SizedBox(height: 10),
+
+            // ❌ Botón Cancelar
             SizedBox(
               width: 400,
               height: 50,
@@ -51,11 +51,10 @@ class LogoutDialog extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  foregroundColor: Colors.white,
                   side: const BorderSide(color: Colors.grey, width: 1),
                 ),
                 onPressed: () {
-                  context.pop();
+                  Navigator.of(context).pop(false); // devuelve "false"
                 },
                 child: const Text(
                   "Cancelar",
@@ -69,13 +68,11 @@ class LogoutDialog extends StatelessWidget {
     );
   }
 
-  static Future<dynamic> show(BuildContext context) {
-    return showDialog(
+  static Future<bool?> show(BuildContext context) {
+    return showDialog<bool>(
       context: context,
       barrierDismissible: true,
-      builder: (context) {
-        return LogoutDialog();
-      },
+      builder: (context) => const LogoutDialog(),
     );
   }
 }

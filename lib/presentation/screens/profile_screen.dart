@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:proyecto_tp3/core/components/app_bar.dart';
 import 'package:proyecto_tp3/core/components/bottom_bar.dart';
 import 'package:proyecto_tp3/core/components/dialogs/logout_dialog.dart';
+import 'package:proyecto_tp3/services/firebase_auth_service.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -100,6 +101,8 @@ class ProfileScreen extends StatelessWidget {
                   style: const TextStyle(color: Colors.white70, fontSize: 16),
                 ),
                 const SizedBox(height: 60),
+
+                // Botón Ver Mis Reseñas
                 ElevatedButton(
                   onPressed: () {
                     context.push('/user_reviews');
@@ -119,6 +122,8 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
+
+                // Botón Editar Perfil
                 ElevatedButton(
                   onPressed: () {
                     context.go('/edit_profile');
@@ -138,9 +143,17 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
+
+                // ✅ Botón Cerrar Sesión (corregido)
                 ElevatedButton(
-                  onPressed: () {
-                    LogoutDialog.show(context);
+                  onPressed: () async {
+                    final confirm = await LogoutDialog.show(context);
+                    if (confirm == true) {
+                      await FirebaseAuthService().logout();
+                      if (context.mounted) {
+                        context.go('/login');
+                      }
+                    }
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.red),
