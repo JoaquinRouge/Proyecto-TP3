@@ -1,17 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_tp3/core/components/app_bar.dart';
 import 'package:proyecto_tp3/core/components/bottom_bar.dart';
 import 'package:proyecto_tp3/core/components/dialogs/logout_dialog.dart';
+import 'package:proyecto_tp3/provider/page_provider.dart';
 import 'package:proyecto_tp3/services/firebase_auth_service.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final user = FirebaseAuth.instance.currentUser;
     final uid = user?.uid;
     final db = FirebaseFirestore.instance;
@@ -150,6 +152,7 @@ class ProfileScreen extends StatelessWidget {
                     final confirm = await LogoutDialog.show(context);
                     if (confirm == true) {
                       await FirebaseAuthService().logout();
+                      ref.invalidate(pageProvider);
                       if (context.mounted) {
                         context.go('/login');
                       }
