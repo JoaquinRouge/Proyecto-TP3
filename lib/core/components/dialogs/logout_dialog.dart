@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LogoutDialog extends StatelessWidget {
   const LogoutDialog({super.key});
@@ -34,7 +35,7 @@ class LogoutDialog extends StatelessWidget {
                   foregroundColor: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop(true); // devuelve "true"
+                  context.pop(true); // devuelve "true"
                 },
                 child: const Text("Confirmar", style: TextStyle(fontSize: 15)),
               ),
@@ -54,7 +55,7 @@ class LogoutDialog extends StatelessWidget {
                   side: const BorderSide(color: Colors.grey, width: 1),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop(false); // devuelve "false"
+                  context.pop(false); // devuelve "false"
                 },
                 child: const Text(
                   "Cancelar",
