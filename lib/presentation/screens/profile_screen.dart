@@ -146,7 +146,6 @@ class ProfileScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 20),
 
-                // ✅ Botón Cerrar Sesión (corregido)
                 ElevatedButton(
                   onPressed: () async {
                     final confirm = await LogoutDialog.show(context);

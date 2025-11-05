@@ -22,7 +22,7 @@ class LogoutDialog extends StatelessWidget {
       actions: [
         Column(
           children: [
-            // ✅ Botón Confirmar
+            //Botón Confirmar
             SizedBox(
               width: 400,
               height: 50,
@@ -42,7 +42,7 @@ class LogoutDialog extends StatelessWidget {
             ),
             const SizedBox(height: 10),
 
-            // ❌ Botón Cancelar
+            // Botón Cancelar
             SizedBox(
               width: 400,
               height: 50,
