@@ -48,10 +48,10 @@ La aplicación obtiene la información de una **API externa** y utiliza **Fireba
 
 ## 🏫 Información académica
 
-**Materia:** Taller de Programación 3
-**Docente:** Alejandro Breitman
-**Carrera:** Analista de Sistemas 
-**Institución:** Instituto ORT Argentina 
-**Año:** 2025
+**Materia:** Taller de Programación 3 <br>
+**Docente:** Alejandro Breitman <br>
+**Carrera:** Analista de Sistemas <br>
+**Institución:** Instituto ORT Argentina <br>
+**Año:** 2025 
 
 ---
