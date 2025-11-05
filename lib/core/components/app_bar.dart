@@ -36,7 +36,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.only(right: 16.0),
           child: Image.asset(
             'assets/images/logo_gameshelf.png',
-            height: 75, 
+            height: 40, 
           ),
         ),
       ],
