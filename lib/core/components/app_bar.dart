@@ -11,9 +11,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         color: Colors.white,
       ),
+      backgroundColor: Colors.black,
+      toolbarHeight: 80,
+      centerTitle: true,
+      shape: Border(
+        bottom: BorderSide(color: Colors.grey.shade300, width: 0.1),
+      ),
+
       title: Text(
         title,
         style: TextStyle(
@@ -22,12 +29,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: Theme.of(context).colorScheme.primary,
         ),
       ),
-      backgroundColor: Colors.black,
-      toolbarHeight: 80,
-      shape: Border(
-        bottom: BorderSide(color: Colors.grey.shade300, width: 0.1),
-      ),
-      centerTitle: true,
+
+      // Logo a la derecha
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: Image.asset(
+            'assets/images/logo_gameshelf.png',
+            height: 75, 
+          ),
+        ),
+      ],
     );
   }
 }

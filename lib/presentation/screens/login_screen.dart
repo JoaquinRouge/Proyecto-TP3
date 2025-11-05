@@ -36,6 +36,15 @@ class LoginScreen extends ConsumerWidget {
               children: [
                 const SizedBox(height: 40),
 
+                // Logo
+                Center(
+                  child: Transform.translate(
+                    offset: const Offset(0,-40), // 🔼 mueve el logo 60px hacia arriba
+                    child: Image.asset('assets/images/logo_gameshelf.png', 
+                    height: 220),
+                  ),
+                ),
+
                 // Título
                 const Text(
                   'Iniciar sesión',

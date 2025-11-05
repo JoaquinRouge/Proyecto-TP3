@@ -31,3 +31,5 @@ flutter:
   uses-material-design: true
   assets:
     - .env
+    - assets/images/logo_gameshelf.png
+    - assets/images/avatar.png
