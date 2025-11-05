@@ -39,19 +39,19 @@ La aplicación obtiene la información de una **API externa** y utiliza **Fireba
 
 # 👨‍💻 Desarrolladores
 
-- [Joaquin Rouge]  
-- [Rodrigo Alcalde]  
-- [Federico Wainstein]  
-- [Sebastian Rosenfeld]
+- Joaquin Rouge
+- Rodrigo Alcalde 
+- Federico Wainstein 
+- Sebastian Rosenfeld
 
 ---
 
 ## 🏫 Información académica
 
 **Materia:** Taller de Programación 3
-**Docente:** [Alejandro Breitman]  
-**Carrera:** [Analista de Sistemas]  
-**Institución:** [Instituto ORT Argentina]  
+**Docente:** Alejandro Breitman
+**Carrera:** Analista de Sistemas 
+**Institución:** Instituto ORT Argentina 
 **Año:** 2025
 
 ---
