@@ -1,22 +1,3 @@
-# 👨‍💻 Desarrolladores
-
-- [Joaquin Rouge]  
-- [Rodrigo Alcalde]  
-- [Federico Wainstein]  
-- [Sebastian Rosenfeld]
-
----
-
-## 🏫 Información académica
-
-**Materia:** Taller de Programación 3
-**Docente:** [Alejandro Breitman]  
-**Carrera:** [Analista de Sistemas]  
-**Institución:** [Instituto ORT Argentina]  
-**Año:** 2025
-
----
-
 # 🎮 GameShelf
 
 **GameShelf** es una aplicación móvil desarrollada en **Flutter** que permite a los usuarios explorar una biblioteca de videojuegos, agregarlos a su colección personal y dejar reseñas con comentarios y calificaciones.  
@@ -53,5 +34,24 @@ La aplicación obtiene la información de una **API externa** y utiliza **Fireba
 - **Heroicons** — Íconos vectoriales modernos.  
 - **Flutter Rating Bar** — Valoraciones con estrellas.  
 - **Material Design 3** — Base visual moderna y adaptable.
+
+---
+
+# 👨‍💻 Desarrolladores
+
+- [Joaquin Rouge]  
+- [Rodrigo Alcalde]  
+- [Federico Wainstein]  
+- [Sebastian Rosenfeld]
+
+---
+
+## 🏫 Información académica
+
+**Materia:** Taller de Programación 3
+**Docente:** [Alejandro Breitman]  
+**Carrera:** [Analista de Sistemas]  
+**Institución:** [Instituto ORT Argentina]  
+**Año:** 2025
 
 ---
