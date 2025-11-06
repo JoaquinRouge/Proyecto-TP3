@@ -163,7 +163,7 @@ class LoginScreen extends ConsumerWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          context.go('/register');
+                          context.push('/register');
                         },
                         child: const Text(
                           'Registrarse',
